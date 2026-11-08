@@ -50,12 +50,12 @@ function useMusic(src: string | null) {
 
 /** Trailer timing (seconds). */
 const SCENES: TrailerScene[] = [
-  { id: 'landing', C: Landing, duration: 9 },
+  { id: 'landing', C: Landing, duration: 8.5 },
   { id: 'names', C: Names, duration: 8.5 },
-  { id: 'date', C: DateBoard, duration: 10 },
-  { id: 'time', C: TimeScene, duration: 7.5 },
-  { id: 'venue', C: Venue, duration: 7.5 },
-  { id: 'invite', C: Invitation, duration: 11 },
+  { id: 'date', C: DateBoard, duration: 8.6 },
+  { id: 'time', C: TimeScene, duration: 6.2 },
+  { id: 'venue', C: Venue, duration: 6.2 },
+  { id: 'invite', C: Invitation, duration: 7 },
 ]
 
 export default function App() {

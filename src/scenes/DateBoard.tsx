@@ -185,7 +185,7 @@ export function DateBoard() {
             <p className="font-[family-name:var(--font-display)] text-[clamp(0.6rem,3cqw,0.8rem)] tracking-[0.28em] text-[var(--color-blue-deep)] uppercase">{g.weekday}</p>
             <p className="relative font-[family-name:var(--font-display)] text-[clamp(2.2rem,13cqw,3.6rem)] leading-none text-[var(--color-ink)]">
               {g.day}
-              <svg viewBox="0 0 80 60" className="pointer-events-none absolute top-1/2 left-1/2 h-[150%] w-[190%] -translate-x-1/2 -translate-y-1/2 overflow-visible" aria-hidden>
+              <svg viewBox="0 0 80 60" className="pointer-events-none absolute top-1/2 left-1/2 h-[1.3em] w-[1.75em] -translate-x-1/2 -translate-y-[52%] overflow-visible" aria-hidden>
                 <path className="date-mark" d={roughEllipse(40, 30, 36, 25, 17)} fill="none" stroke="#c98e9c" strokeWidth={1.6} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
               </svg>
             </p>

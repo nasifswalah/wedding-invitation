@@ -6,7 +6,7 @@ import { drawSketch, SketchLink } from '../sketch/sketch'
 import { Hydrangea, RoseHead, Eucalyptus } from '../components/garden/botanical'
 import { setAttractor } from '../components/garden/wind'
 import { wedding } from '../config/wedding'
-import { downloadIcs, whatsappShareUrl } from '../lib/calendar'
+import { googleCalendarUrl, whatsappShareUrl } from '../lib/calendar'
 import { prefersReducedMotion } from '../lib/motion'
 import { Couple } from './Couple'
 import { Page, Sketch, at } from './Page'
@@ -195,7 +195,7 @@ export function Invitation() {
           <p className="mt-2 font-[family-name:var(--font-script)] text-3xl text-[var(--color-ink)]">{inv.signature}</p>
           <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-3">
             <SketchLink href={whatsappShareUrl()} external>Share on WhatsApp</SketchLink>
-            <SketchLink onClick={() => downloadIcs(wedding.event)} color="#6f8aa1" delay={0.3}>Save to calendar</SketchLink>
+            <SketchLink href={googleCalendarUrl(wedding.event)} external color="#6f8aa1" delay={0.3}>Save to calendar</SketchLink>
           </div>
           <p className="mt-14 font-[family-name:var(--font-display)] text-[0.6rem] tracking-[0.3em] text-[var(--color-pencil)] uppercase">
             In shaa Allah · {new Date(wedding.event.start).getFullYear()}

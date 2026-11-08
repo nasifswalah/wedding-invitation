@@ -86,14 +86,14 @@ export const wedding = {
     opening: 'With the blessings of Allah, the Most Merciful',
     lines: [
       'We joyfully invite you and your family',
-      'to share in the blessed Nikah of our children.',
+      'to celebrate our Nikah with us.',
       'Your presence and duas will make',
       'our day truly complete.',
     ],
     quoteAr: 'وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
     quoteEn: '“And He placed between you affection and mercy.”',
     quoteRef: 'Surah Ar-Rum · 30:21',
-    signature: 'With love & duas, from both families',
+    signature: 'With love & duas, Athika & Shamil',
   },
 
   /** Put the audio file in /public/audio. Set to null to hide the music button. */

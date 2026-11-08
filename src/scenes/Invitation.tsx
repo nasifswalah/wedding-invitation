@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { motion } from 'framer-motion'
 import { useSceneTimeline, useSceneMode } from '../story/scene'
 import { drawSketch, SketchLink } from '../sketch/sketch'
 import { Hydrangea, RoseHead, Eucalyptus } from '../components/garden/botanical'
@@ -9,7 +8,7 @@ import { wedding } from '../config/wedding'
 import { googleCalendarUrl, whatsappShareUrl } from '../lib/calendar'
 import { prefersReducedMotion } from '../lib/motion'
 import { Couple } from './Couple'
-import { Page, Sketch, at } from './Page'
+import { Page, Sketch, at, usePageWide } from './Page'
 import { FlowerStand, GroundLantern, GuestTable, Palm, RoundTree, StringLights } from './props'
 
 function ArchSketch() {
@@ -76,11 +75,60 @@ function InviteWide() {
   )
 }
 
-/** Scene 6 — the couple under a floral arch; falling petals fill the bride's bouquet. */
+/** A hand-written letter that rises over the scene and reads itself line by line. */
+function Letter() {
+  const wide = usePageWide()
+  const inv = wedding.invitation
+  const { bride, groom } = wedding.shortNames
+  return (
+    <div className="letter z-10" data-wide={wide ? '1' : ''} style={wide ? at(610, 64, 330) : at(200, 148, 352)}>
+      <div
+        className="relative rounded-[6px] px-[8%] pt-9 pb-6 text-center"
+        style={{
+          background: 'linear-gradient(180deg, #fffdf8 0%, #faf3e6 100%)',
+          boxShadow: '0 26px 50px -26px rgba(61,75,92,0.55), 0 2px 6px -2px rgba(61,75,92,0.12)',
+        }}
+      >
+        {/* pencil border, drawn in */}
+        <svg className="letter-border pointer-events-none absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+          <rect className="sk sk-light" x="0" y="0" width="100" height="100" rx="1.5" vectorEffect="non-scaling-stroke" />
+        </svg>
+        {/* wax seal */}
+        <div
+          className="seal absolute -top-6 left-1/2 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full font-[family-name:var(--font-script)] text-[1.15rem] text-[#fffaf5]"
+          style={{ background: 'radial-gradient(circle at 35% 30%, #d9a3b0, #9c6473 75%)', boxShadow: '0 4px 10px -3px rgba(156,100,115,0.7)' }}
+        >
+          {bride[0]}&amp;{groom[0]}
+        </div>
+
+        <p className="l-in eyebrow !text-[0.6rem]">An invitation</p>
+        <p className="l-in mt-1.5 text-[0.95rem] italic text-[var(--color-blue-deep)]">{inv.opening}</p>
+        <div className="mt-3 space-y-0.5">
+          {inv.lines.map((l) => (
+            <p key={l} className="l-in text-[1.08rem] leading-snug text-balance text-[var(--color-ink)]">{l}</p>
+          ))}
+        </div>
+        <svg viewBox="0 0 120 10" className="l-in mx-auto my-3 h-2.5 w-28" aria-hidden>
+          <path d="M2 5 C 30 5 40 1 56 5 M118 5 C 90 5 80 1 64 5" stroke="#c98e9c" strokeWidth="1" fill="none" />
+          <path d="M60 2 L63 5 L60 8 L57 5Z" fill="#a9bfcf" />
+        </svg>
+        <p className="l-in arabic text-[1.25rem] leading-[1.7] text-[var(--color-mauve-deep)]">{inv.quoteAr}</p>
+        <p className="l-in text-[0.88rem] italic text-[var(--color-pencil)]">{inv.quoteEn}</p>
+        <p className="l-in mt-0.5 font-[family-name:var(--font-display)] text-[0.55rem] tracking-[0.28em] text-[var(--color-blue-deep)] uppercase">{inv.quoteRef}</p>
+        <p className="l-in mt-3 font-[family-name:var(--font-script)] text-[1.55rem] leading-tight text-[var(--color-ink)]">{inv.signature}</p>
+        <div className="l-in mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1">
+          <SketchLink href={whatsappShareUrl()} external delay={0.2}>Share on WhatsApp</SketchLink>
+          <SketchLink href={googleCalendarUrl(wedding.event)} external color="#6f8aa1" delay={0.4}>Save to calendar</SketchLink>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/** Scene 6 — the couple under a floral arch, then a letter with the invitation rises over the scene. */
 export function Invitation() {
   const root = useRef<HTMLElement>(null)
   const mode = useSceneMode()
-  const inv = wedding.invitation
 
   useSceneTimeline(root, (tl, q, el) => {
     gsap.set(q('.bq-slot'), { scale: 0, transformOrigin: '50% 50%' })
@@ -95,36 +143,39 @@ export function Invitation() {
       drawSketch(tl, el.querySelector('.couple'), { at: 0.9, duration: 2.6, washAt: 2.8 })
     }
     tl.from(q('.i-in'), { opacity: 0, y: 10, filter: 'blur(4px)', duration: 0.9, stagger: 0.2 }, 1.2)
+
+    // after a short pause, the letter rises and reads itself
+    const L = 3.6
+    const wide = !!(el.querySelector('.letter') as HTMLElement | null)?.dataset.wide
+    tl.fromTo(q('.letter'), { opacity: 0, y: 70, rotate: -2.5 }, { opacity: 1, y: 0, rotate: 0, duration: 1.2, ease: 'power3.out' }, L)
+    if (!wide) tl.to(q('.art-dim'), { opacity: 0.18, filter: 'blur(1.5px)', duration: 1 }, L)
+    drawSketch(tl, el.querySelector('.letter-border'), { at: L + 0.5, duration: 0.9 })
+    tl.from(q('.seal'), { scale: 0, rotate: -40, duration: 0.6, ease: 'back.out(2.2)' }, L + 0.7)
+      .from(q('.l-in'), { opacity: 0, y: 8, filter: 'blur(4px)', duration: 0.7, stagger: 0.36 }, L + 1)
   })
 
-  // the bouquet catches petals whenever this scene is on screen
+  // the hand-drawn couple's bouquet fills with petals (not used with a photo/illustration)
   useEffect(() => {
     const el = root.current!
-    // only the hand-drawn couple has a bouquet that fills; a photo/illustration is left as it is
     if (wedding.couplePhoto) return
     if (prefersReducedMotion()) {
       gsap.set(el.querySelectorAll('.bq-slot'), { scale: 1 })
       return
     }
-    // drawn couple: petals fill empty bouquet slots; photo: petals land in her bouquet with a soft glow
     const slots = Array.from(el.querySelectorAll('.bq-slot'))
-    const glow = el.querySelector('.bq-glow')
-    const total = wedding.couplePhoto ? 14 : slots.length
-    let filled = wedding.couplePhoto ? 0 : 2
+    let filled = 2
     const target = el.querySelector('.bouquet-target')!
     const attractor = {
       rate: 2.4,
-      // only catch while the bouquet is comfortably on screen
       getPoint: () => {
-        if (filled >= total) return null
+        if (filled >= slots.length) return null
         const r = target.getBoundingClientRect()
         if (r.top < window.innerHeight * 0.15 || r.top > window.innerHeight * 0.9) return null
         return { x: r.left + r.width / 2, y: r.top + r.height / 2 }
       },
       onLand: () => {
         const s = slots[filled++]
-        if (!wedding.couplePhoto && s) gsap.to(s, { scale: 1, duration: 0.6, ease: 'back.out(2.4)' })
-        if (glow) gsap.fromTo(glow, { opacity: 0.85, scale: 0.6 }, { opacity: 0, scale: 1.6, duration: 0.9, ease: 'power2.out' })
+        if (s) gsap.to(s, { scale: 1, duration: 0.6, ease: 'back.out(2.4)' })
       },
     }
     const start = setTimeout(() => setAttractor(attractor), mode === 'trailer' ? 2200 : 0)
@@ -138,19 +189,19 @@ export function Invitation() {
     <section ref={root} className="scene">
       <div className="ill relative h-[100svh]">
         <Page>
-          <Sketch wide={<InviteWide />}>
+          <Sketch className="art-dim" wide={<InviteWide />}>
             <g className="arch"><ArchSketch /></g>
             <ArchDecor />
             <ArchFlowers />
             {!wedding.couplePhoto && <g className="couple" transform="translate(50 238)"><Couple /></g>}
           </Sketch>
           {wedding.couplePhoto && (
-            <div className="couple-photo" style={at(200, 268, 240)}>
+            <div className="couple-photo art-dim" style={at(200, 268, 240)}>
               <img src={wedding.couplePhoto} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="block h-auto w-full select-none" draggable={false} />
               <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(107,122,140,0.18)] blur-[6px]" />
             </div>
           )}
-          <div style={at(200, 34, 370)} className="text-center">
+          <div style={at(200, 34, 370)} className="art-dim text-center">
             <p className="i-in eyebrow !text-[clamp(0.55rem,2.6cqw,0.72rem)]">You are invited</p>
             <p className="i-in mt-1 font-[family-name:var(--font-script)] text-[clamp(1.8rem,9cqw,2.7rem)] leading-tight text-[var(--color-ink)]">
               join us in our happiness
@@ -159,49 +210,9 @@ export function Invitation() {
               {wedding.shortNames.bride} &amp; {wedding.shortNames.groom}
             </p>
           </div>
+          <Letter />
         </Page>
       </div>
-
-      {mode === 'scroll' && (
-        <div className="mx-auto max-w-xl px-7 pt-6 pb-24 text-center">
-          <p className="eyebrow">An invitation</p>
-          <p className="mt-3 italic text-[var(--color-blue-deep)]">{inv.opening}</p>
-          <div className="mt-6 space-y-1.5">
-            {inv.lines.map((l, i) => (
-              <motion.p
-                key={l}
-                className="text-[1.2rem] leading-relaxed text-balance text-[var(--color-ink)] sm:text-[1.4rem]"
-                initial={{ opacity: 0, y: 12, filter: 'blur(5px)' }}
-                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{ duration: 0.9, delay: i * 0.15 }}
-              >
-                {l}
-              </motion.p>
-            ))}
-          </div>
-          <motion.div
-            className="mt-10"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
-          >
-            <p className="arabic text-[1.5rem] leading-[2] text-[var(--color-mauve-deep)]">{inv.quoteAr}</p>
-            <p className="mt-3 text-[1rem] italic leading-relaxed text-[var(--color-pencil)]">{inv.quoteEn}</p>
-            <p className="mt-2 font-[family-name:var(--font-display)] text-[0.64rem] tracking-[0.3em] text-[var(--color-blue-deep)] uppercase">{inv.quoteRef}</p>
-          </motion.div>
-          <p className="arabic mt-12 text-2xl text-[var(--color-ink)]">جَزَاكُمُ ٱللَّٰهُ خَيْرًا</p>
-          <p className="mt-2 font-[family-name:var(--font-script)] text-3xl text-[var(--color-ink)]">{inv.signature}</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-3">
-            <SketchLink href={whatsappShareUrl()} external>Share on WhatsApp</SketchLink>
-            <SketchLink href={googleCalendarUrl(wedding.event)} external color="#6f8aa1" delay={0.3}>Save to calendar</SketchLink>
-          </div>
-          <p className="mt-14 font-[family-name:var(--font-display)] text-[0.6rem] tracking-[0.3em] text-[var(--color-pencil)] uppercase">
-            In shaa Allah · {new Date(wedding.event.start).getFullYear()}
-          </p>
-        </div>
-      )}
     </section>
   )
 }

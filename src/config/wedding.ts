@@ -83,17 +83,15 @@ export const wedding = {
   hijriOverride: null as null | { day: number; monthEn: string; monthAr: string; year: number },
 
   invitation: {
-    opening: 'With the blessings of Allah, the Most Gracious, the Most Merciful',
+    opening: 'With the blessings of Allah, the Most Merciful',
     lines: [
-      'We joyfully request the honour of your presence',
-      'and the pleasure of your company',
-      'as two hearts, two families and two homes',
-      'come together in the sacred bond of Nikah.',
-      'Your presence and prayers will make our day complete.',
+      'We joyfully invite you and your family',
+      'to share in the blessed Nikah of our children.',
+      'Your presence and duas will make',
+      'our day truly complete.',
     ],
-    quoteAr: 'وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
-    quoteEn:
-      '“And among His signs is that He created for you spouses from among yourselves, that you may find tranquillity in them; and He placed between you affection and mercy.”',
+    quoteAr: 'وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
+    quoteEn: '“And He placed between you affection and mercy.”',
     quoteRef: 'Surah Ar-Rum · 30:21',
     signature: 'With love & duas, from both families',
   },

@@ -167,13 +167,6 @@ export function Venue() {
           </div>
         </Page>
       </div>
-      {mode === 'scroll' && v.directions.length > 0 && (
-        <ol className="v-in mx-auto max-w-md space-y-2 px-8 pb-12 text-[1.02rem] leading-snug text-[var(--color-ink)]">
-          {v.directions.map((d, i) => (
-            <li key={d} className="flex gap-2"><span className="hand text-[1.25em] leading-none text-[var(--color-blue-deep)]">{i + 1}.</span><span>{d}</span></li>
-          ))}
-        </ol>
-      )}
     </section>
   )
 }

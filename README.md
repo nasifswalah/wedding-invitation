@@ -1,6 +1,6 @@
-# Wedding Invitation — Ayisha & Fahad (mock data)
+# Wedding Invitation — Athika & Shamil
 
-A mobile-first animated invitation: Arabic calligraphy intro → living garden hero → dates (Gregorian + Hijri) and countdown → Nikah and Walima events → venue directions and map → invitation message → closing scene at dusk.
+A mobile-first animated storybook invitation. It opens like a trailer (du'a → names → date → time → venue → invitation), then becomes a scroll page.
 
 ## Run
 

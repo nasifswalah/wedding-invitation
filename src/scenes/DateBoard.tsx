@@ -193,8 +193,9 @@ export function DateBoard() {
           </div>
           <div className="ar-date arabic absolute inset-0 flex flex-col items-center justify-center text-center">
             <p className="text-[clamp(0.9rem,4.4cqw,1.2rem)] leading-tight text-[var(--color-blue-deep)]">{arabicWeekday(iso)}</p>
-            <p className="text-[clamp(2.2rem,12cqw,3.4rem)] leading-[1.15] text-[var(--color-ink)]">{h.dayAr}</p>
-            <p className="text-[clamp(1rem,5.2cqw,1.4rem)] leading-tight text-[var(--color-mauve-deep)]">{h.monthAr} {h.yearAr} هـ</p>
+            <p className="text-[clamp(1.9rem,10.5cqw,3rem)] leading-[1.1] text-[var(--color-ink)]">{h.dayAr}</p>
+            <p className="whitespace-nowrap text-[clamp(0.95rem,4.8cqw,1.3rem)] leading-tight text-[var(--color-mauve-deep)]">{h.monthAr}</p>
+            <p className="text-[clamp(0.8rem,3.8cqw,1.05rem)] leading-tight text-[var(--color-mauve-deep)]">{h.yearAr} هـ</p>
           </div>
         </div>
       </Page>

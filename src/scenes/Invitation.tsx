@@ -143,11 +143,11 @@ export function Invitation() {
             {!wedding.couplePhoto && <g className="couple" transform="translate(50 238)"><Couple /></g>}
           </Sketch>
           {wedding.couplePhoto && (
-            <div className="couple-photo" style={at(200, 168, 262)}>
+            <div className="couple-photo" style={at(200, 190, 290)}>
               <img src={wedding.couplePhoto} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="block h-auto w-full select-none" draggable={false} />
               {/* her bouquet, where the falling petals land */}
-              <span className="bouquet-target absolute h-1 w-1" style={{ left: '52%', top: '40%' }} />
-              <span className="bq-glow pointer-events-none absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0" style={{ left: '52%', top: '40%', background: 'radial-gradient(closest-side, rgba(255,250,240,0.95), rgba(234,210,214,0.5) 50%, rgba(234,210,214,0))' }} />
+              <span className="bouquet-target absolute h-1 w-1" style={{ left: '43%', top: '40%' }} />
+              <span className="bq-glow pointer-events-none absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0" style={{ left: '43%', top: '40%', background: 'radial-gradient(closest-side, rgba(255,250,240,0.95), rgba(234,210,214,0.5) 50%, rgba(234,210,214,0))' }} />
               <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(107,122,140,0.18)] blur-[6px]" />
             </div>
           )}

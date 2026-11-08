@@ -40,45 +40,37 @@ export type WeddingEvent = {
 
 export const wedding = {
   bride: {
-    name: 'Ayisha Rahman',
+    name: 'Athika Rabeea',
     relation: 'Daughter of',
-    father: 'Mr. Abdul Rahman K.',
-    mother: 'Mrs. Safiya Rahman',
-    family: 'Kunnummal House, Kozhikode',
+    father: 'Zakeer Hussain M',
+    mother: 'Soudath',
   } satisfies Person,
 
   groom: {
-    name: 'Muhammed Fahad',
+    name: 'Muhammed Shamil',
     relation: 'Son of',
-    father: 'Mr. Ibrahim Kutty P.',
-    mother: 'Mrs. Ramla Ibrahim',
-    family: 'Puthanveettil House, Malappuram',
+    father: 'Kinanath K',
+    mother: 'Suhara',
   } satisfies Person,
 
-  /** Short names used in the hero monogram and share text */
-  shortNames: { bride: 'Ayisha', groom: 'Fahad' },
+  /** Short names used in the monogram and share text */
+  shortNames: { bride: 'Athika', groom: 'Shamil' },
 
   /** The wedding event (one session). */
   event: {
     id: 'nikah',
     title: 'Nikah',
     arabicTitle: 'عقد النكاح',
-    start: '2027-01-17T11:00:00+05:30',
-    end: '2027-01-17T13:00:00+05:30',
-    note: 'Followed by lunch',
+    // TODO: time is a placeholder — update when confirmed (date: Wednesday 9 December 2026)
+    start: '2026-12-09T11:00:00+05:30',
+    end: '2026-12-09T13:00:00+05:30',
     venue: {
-      name: 'Masjid Al-Noor Auditorium',
-      address: 'Mavoor Road, Kozhikode, Kerala 673004',
-      directions: [
-        'From Kozhikode KSRTC bus stand, head east on Mavoor Road for about 2 km.',
-        'Pass the Arayidathupalam junction and keep straight.',
-        'The auditorium is on the left, right after Masjid Al-Noor — look for the green arch.',
-        'Parking is available behind the auditorium.',
-      ],
-      mapsUrl: 'https://maps.google.com/?q=Mavoor+Road+Kozhikode',
-      embedQuery: 'Mavoor Road, Kozhikode, Kerala',
+      name: 'City Plaza Auditorium',
+      address: 'Tirur, Malappuram, Kerala',
+      directions: [],
+      mapsUrl: 'https://maps.app.goo.gl/nJpbRSq1MwsRzYdi6',
     },
-  } satisfies WeddingEvent,
+  } as WeddingEvent,
 
   /** Cut-out photo of the couple (transparent background) — null uses the hand-drawn version. */
   couplePhoto: '/images/couple.webp' as string | null,
@@ -110,7 +102,7 @@ export const wedding = {
   music: '/audio/nasheed.mp3' as string | null,
 
   /** Used by the WhatsApp share button. Defaults to the current page URL. */
-  shareText: 'You are warmly invited to the wedding of Ayisha & Fahad 💍🌸',
+  shareText: 'You are warmly invited to the wedding of Athika & Shamil 💍🌸',
 }
 
 export type Wedding = typeof wedding

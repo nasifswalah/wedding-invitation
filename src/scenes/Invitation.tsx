@@ -54,7 +54,11 @@ export function Invitation() {
     gsap.set(q('.bq-slot').slice(0, 2), { scale: 1 })
     drawSketch(tl, el.querySelector('.arch'), { at: 0.1, duration: 1.4, washAt: 1.2 })
     tl.from(q('.arch-flower'), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%', duration: 0.7, stagger: 0.05, ease: 'back.out(2)' }, 0.8)
-    drawSketch(tl, el.querySelector('.couple'), { at: 0.9, duration: 2.6, washAt: 2.8 })
+    if (wedding.couplePhoto) {
+      tl.from(q('.couple-photo'), { opacity: 0, y: 28, scale: 0.97, filter: 'blur(8px)', duration: 1.8, ease: 'power2.out' }, 0.7)
+    } else {
+      drawSketch(tl, el.querySelector('.couple'), { at: 0.9, duration: 2.6, washAt: 2.8 })
+    }
     tl.from(q('.i-in'), { opacity: 0, y: 10, filter: 'blur(4px)', duration: 0.9, stagger: 0.2 }, 1.2)
   })
 
@@ -65,21 +69,25 @@ export function Invitation() {
       gsap.set(el.querySelectorAll('.bq-slot'), { scale: 1 })
       return
     }
+    // drawn couple: petals fill empty bouquet slots; photo: petals land in her bouquet with a soft glow
     const slots = Array.from(el.querySelectorAll('.bq-slot'))
-    let filled = 2
+    const glow = el.querySelector('.bq-glow')
+    const total = wedding.couplePhoto ? 14 : slots.length
+    let filled = wedding.couplePhoto ? 0 : 2
     const target = el.querySelector('.bouquet-target')!
     const attractor = {
       rate: 2.4,
       // only catch while the bouquet is comfortably on screen
       getPoint: () => {
-        if (filled >= slots.length) return null
+        if (filled >= total) return null
         const r = target.getBoundingClientRect()
         if (r.top < window.innerHeight * 0.15 || r.top > window.innerHeight * 0.9) return null
         return { x: r.left + r.width / 2, y: r.top + r.height / 2 }
       },
       onLand: () => {
         const s = slots[filled++]
-        if (s) gsap.to(s, { scale: 1, duration: 0.6, ease: 'back.out(2.4)' })
+        if (!wedding.couplePhoto && s) gsap.to(s, { scale: 1, duration: 0.6, ease: 'back.out(2.4)' })
+        if (glow) gsap.fromTo(glow, { opacity: 0.85, scale: 0.6 }, { opacity: 0, scale: 1.6, duration: 0.9, ease: 'power2.out' })
       },
     }
     const start = setTimeout(() => setAttractor(attractor), mode === 'trailer' ? 2200 : 0)
@@ -96,8 +104,17 @@ export function Invitation() {
           <Sketch>
             <g className="arch"><ArchSketch /></g>
             <ArchFlowers />
-            <g className="couple" transform="translate(50 238)"><Couple /></g>
+            {!wedding.couplePhoto && <g className="couple" transform="translate(50 238)"><Couple /></g>}
           </Sketch>
+          {wedding.couplePhoto && (
+            <div className="couple-photo" style={at(200, 168, 262)}>
+              <img src={wedding.couplePhoto} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="block h-auto w-full select-none" draggable={false} />
+              {/* her bouquet, where the falling petals land */}
+              <span className="bouquet-target absolute h-1 w-1" style={{ left: '52%', top: '40%' }} />
+              <span className="bq-glow pointer-events-none absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0" style={{ left: '52%', top: '40%', background: 'radial-gradient(closest-side, rgba(255,250,240,0.95), rgba(234,210,214,0.5) 50%, rgba(234,210,214,0))' }} />
+              <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(107,122,140,0.18)] blur-[6px]" />
+            </div>
+          )}
           <div style={at(200, 34, 370)} className="text-center">
             <p className="i-in eyebrow !text-[clamp(0.55rem,2.6cqw,0.72rem)]">You are invited</p>
             <p className="i-in mt-1 font-[family-name:var(--font-script)] text-[clamp(1.8rem,9cqw,2.7rem)] leading-tight text-[var(--color-ink)]">

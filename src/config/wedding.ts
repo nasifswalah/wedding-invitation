@@ -80,8 +80,8 @@ export const wedding = {
     },
   } satisfies WeddingEvent,
 
-  /** Photos of the couple — leave null to use the hand-drawn sketch. */
-  couplePhoto: null as string | null,
+  /** Cut-out photo of the couple (transparent background) — null uses the hand-drawn version. */
+  couplePhoto: '/images/couple.webp' as string | null,
 
   /**
    * The Hijri date is calculated automatically (Umm al-Qura).

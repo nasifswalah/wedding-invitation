@@ -48,11 +48,10 @@ function useMusic(src: string | null) {
   return { available, playing, toggle }
 }
 
-/** Trailer timing (seconds). The names scene ends on a gust that carries it away. */
-const NamesTrailer = () => <Names gustAt={7.6} />
+/** Trailer timing (seconds). */
 const SCENES: TrailerScene[] = [
   { id: 'landing', C: Landing, duration: 9 },
-  { id: 'names', C: NamesTrailer, duration: 8.6, exit: 'gust' },
+  { id: 'names', C: Names, duration: 8.5 },
   { id: 'date', C: DateBoard, duration: 10 },
   { id: 'time', C: TimeScene, duration: 7.5 },
   { id: 'venue', C: Venue, duration: 7.5 },

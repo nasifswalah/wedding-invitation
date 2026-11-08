@@ -3,8 +3,8 @@ import gsap from 'gsap'
 import { prefersReducedMotion } from '../../lib/motion'
 
 function Butterfly({ hue }: { hue: 'gold' | 'blush' }) {
-  const a = hue === 'gold' ? '#e6cd8f' : '#efc2b5'
-  const b = hue === 'gold' ? '#b8924a' : '#c98577'
+  const a = hue === 'gold' ? '#d3e0ea' : '#ead2d6'
+  const b = hue === 'gold' ? '#6f8aa1' : '#9c6473'
   return (
     <svg viewBox="-20 -16 40 32" width="34" height="28" style={{ overflow: 'visible' }}>
       <g className="bf-wing-l">

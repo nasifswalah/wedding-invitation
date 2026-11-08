@@ -171,7 +171,26 @@ export function Bud({ r = 8, fill = 'url(#g-mauve-petal)' }: { r?: number; fill?
   )
 }
 
-type FlowerKind = 'rose' | 'peach' | 'ivory' | 'hydrangea' | 'bud' | 'spray'
+
+export function Jasmine({ r = 9 }: { r?: number }) {
+  return (
+    <g>
+      <path d={`M0 0 L0 ${-r * 0.6}`} stroke="#7f9488" strokeWidth={1.1} />
+      <g transform={`translate(0 ${-r * 1.4})`}>
+        {[0, 60, 120, 180, 240, 300].map((a) => (
+          <path key={a} d={petalPath(r * 0.3, r)} transform={`rotate(${a})`} fill="url(#g-jasmine)" stroke="#ddd5c6" strokeWidth={0.4} />
+        ))}
+        <circle r={r * 0.17} fill="url(#g-center)" />
+      </g>
+    </g>
+  )
+}
+
+export function Blade({ h = 80, bend = 14, w = 2.6, fill = 'url(#g-leaf)' }: { h?: number; bend?: number; w?: number; fill?: string }) {
+  return <path d={`M${-w} 0 Q ${bend * 0.35 - w * 0.3} ${-h * 0.55} ${bend} ${-h} Q ${bend * 0.35 + w * 0.4} ${-h * 0.55} ${w} 0 Z`} fill={fill} />
+}
+
+type FlowerKind = 'rose' | 'peach' | 'ivory' | 'hydrangea' | 'jasmine' | 'bud' | 'spray'
 
 export type PlantProps = {
   x: number
@@ -202,6 +221,7 @@ function Head({ kind, size }: { kind: FlowerKind; size: number }) {
     case 'peach': return <Rose r={size} tone="peach" />
     case 'ivory': return <Rose r={size} tone="ivory" />
     case 'hydrangea': return <g transform={`translate(0 ${-size})`}><Hydrangea r={size} /></g>
+    case 'jasmine': return <Jasmine r={size * 0.7} />
     case 'bud': return <Bud r={size * 0.55} />
     case 'spray': return <Spray r={size} dir={1} />
   }

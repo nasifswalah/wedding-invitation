@@ -77,6 +77,16 @@ export function GardenDefs() {
           <stop offset="1" stopColor="#c9ab8c" />
         </linearGradient>
 
+        {/* distant lawn, cool and soft */}
+        <linearGradient id="g-hill-back" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#cfdad6" />
+          <stop offset="1" stopColor="#ece9de" />
+        </linearGradient>
+        <linearGradient id="g-hill-front" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#b3c4bc" />
+          <stop offset="1" stopColor="#dde2d8" />
+        </linearGradient>
+
         {/* pencil wobble for sketched lines */}
         <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
           <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="3" result="t" />

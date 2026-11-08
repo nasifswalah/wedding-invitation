@@ -25,7 +25,7 @@ export function useSceneTimeline(
       const el = root.current
       if (!el) return
       const q = gsap.utils.selector(el)
-      const tl = gsap.timeline({ paused: true })
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
       build(tl, q, el)
       if (prefersReducedMotion()) {
         tl.progress(1)

@@ -114,6 +114,22 @@ body.locked {
   stroke: var(--color-ink);
 }
 
+/* soft morning light over the hero garden */
+.ray {
+  position: absolute;
+  top: -20%;
+  height: 140%;
+  transform: rotate(-24deg);
+  transform-origin: top left;
+  background: linear-gradient(180deg, rgba(255, 252, 244, 0.6), rgba(255, 252, 244, 0) 75%);
+  filter: blur(14px);
+  animation: ray-breathe 9s ease-in-out infinite;
+}
+@keyframes ray-breathe {
+  0%, 100% { opacity: 0.35; transform: rotate(-24deg) translateX(0); }
+  50% { opacity: 0.85; transform: rotate(-21deg) translateX(18px); }
+}
+
 /* SVG plant parts pivot from their base */
 .pivot-base {
   transform-box: fill-box;
@@ -148,5 +164,5 @@ body.locked {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bf-wing-l, .bf-wing-r, .bf-bob, .lantern-glow, .scroll-cue { animation: none; }
+  .ray, .bf-wing-l, .bf-wing-r, .bf-bob, .lantern-glow, .scroll-cue { animation: none; }
 }

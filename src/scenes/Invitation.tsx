@@ -10,6 +10,7 @@ import { downloadIcs, whatsappShareUrl } from '../lib/calendar'
 import { prefersReducedMotion } from '../lib/motion'
 import { Couple } from './Couple'
 import { Page, Sketch, at } from './Page'
+import { FlowerStand, GroundLantern, GuestTable, Palm, RoundTree, StringLights } from './props'
 
 function ArchSketch() {
   return (
@@ -43,6 +44,38 @@ function ArchFlowers() {
   )
 }
 
+
+/** Lanterns at the foot of the arch and fairy lights above it. */
+function ArchDecor() {
+  return (
+    <g className="arch-decor">
+      <GroundLantern x={22} y={642} s={1} />
+      <GroundLantern x={378} y={642} s={1} />
+      <GroundLantern x={70} y={642} s={0.7} />
+      <GroundLantern x={330} y={642} s={0.7} />
+    </g>
+  )
+}
+
+/** Only on wide pages: flower stands, guest tables, palms and lights around the arch. */
+function InviteWide() {
+  return (
+    <g className="invite-wide" filter="url(#pencil)">
+      <path className="sk sk-light" d="M-400 642 L10 642 M390 642 L800 642" />
+      <Palm x={-340} y={642} h={260} />
+      <RoundTree x={-200} y={642} r={52} />
+      <RoundTree x={600} y={642} r={50} />
+      <Palm x={740} y={642} h={270} flip />
+      <FlowerStand x={-60} y={642} h={150} s={1.8} />
+      <FlowerStand x={460} y={642} h={150} s={1.8} />
+      <GuestTable x={-230} y={690} s={1.5} />
+      <GuestTable x={640} y={690} s={1.5} />
+      <StringLights x1={-360} y1={150} x2={60} y2={190} sag={50} n={16} />
+      <StringLights x1={340} y1={190} x2={760} y2={150} sag={50} n={16} />
+    </g>
+  )
+}
+
 /** Scene 6 — the couple under a floral arch; falling petals fill the bride's bouquet. */
 export function Invitation() {
   const root = useRef<HTMLElement>(null)
@@ -52,8 +85,10 @@ export function Invitation() {
   useSceneTimeline(root, (tl, q, el) => {
     gsap.set(q('.bq-slot'), { scale: 0, transformOrigin: '50% 50%' })
     gsap.set(q('.bq-slot').slice(0, 2), { scale: 1 })
+    drawSketch(tl, el.querySelector('.invite-wide'), { at: 0, duration: 1.8, washAt: 1.4 })
     drawSketch(tl, el.querySelector('.arch'), { at: 0.1, duration: 1.4, washAt: 1.2 })
-    tl.from(q('.arch-flower'), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%', duration: 0.7, stagger: 0.05, ease: 'back.out(2)' }, 0.8)
+    drawSketch(tl, el.querySelector('.arch-decor'), { at: 0.8, duration: 0.8 })
+    tl.from(q('.arch-flower, .prop-bloom'), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%', duration: 0.7, stagger: 0.05, ease: 'back.out(2)' }, 0.8)
     if (wedding.couplePhoto) {
       tl.from(q('.couple-photo'), { opacity: 0, y: 28, scale: 0.97, filter: 'blur(8px)', duration: 1.8, ease: 'power2.out' }, 0.7)
     } else {
@@ -101,8 +136,9 @@ export function Invitation() {
     <section ref={root} className="scene">
       <div className="ill relative h-[100svh]">
         <Page>
-          <Sketch>
+          <Sketch wide={<InviteWide />}>
             <g className="arch"><ArchSketch /></g>
+            <ArchDecor />
             <ArchFlowers />
             {!wedding.couplePhoto && <g className="couple" transform="translate(50 238)"><Couple /></g>}
           </Sketch>

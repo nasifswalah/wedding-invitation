@@ -5,6 +5,7 @@ import { Hydrangea, RoseHead, Eucalyptus } from '../components/garden/botanical'
 import { wedding } from '../config/wedding'
 import { arabicWeekday, gregorianParts, hijriParts } from '../lib/dates'
 import { Page, Sketch, at } from './Page'
+import { FlowerStand, GroundLantern, Palm, RoundTree, StringLights, hedge as hedgeD } from './props'
 
 /** Stepping-stone joints across the path, in perspective. */
 function stones() {
@@ -62,6 +63,53 @@ function EntranceSketch() {
   )
 }
 
+
+/** Lanterns lining the path and flower stands at the entrance. */
+function PathDecor() {
+  const edge = (y: number, side: -1 | 1) => 200 + side * (20 + ((y - 420) * 85) / 280) + side * 10
+  return (
+    <g className="path-decor">
+      <FlowerStand x={156} y={420} h={34} s={0.7} />
+      <FlowerStand x={244} y={420} h={34} s={0.7} />
+      {[470, 540, 640].map((y, i) => {
+        const s = 0.55 + ((y - 420) / 280) * 0.9
+        return (
+          <g key={y}>
+            <GroundLantern x={edge(y, -1)} y={y} s={s * 0.9} />
+            {i < 1 && <GroundLantern x={edge(y, 1)} y={y} s={s * 0.9} />}
+          </g>
+        )
+      })}
+    </g>
+  )
+}
+
+/** Only on wide pages: the lawn, hedges, palms and lights continue to both sides. */
+function DateWide() {
+  return (
+    <g className="date-wide" filter="url(#pencil)">
+      <path className="wash" d="M-400 432 L0 430 L0 700 L-400 700Z M400 430 L800 432 L800 700 L400 700Z" fill="#cbd8d0" opacity="0.35" filter="url(#wash)" />
+      <path className="sk sk-light" d="M-400 432 L0 430 M400 430 L800 432" />
+      <path className="sk" d={hedgeD(-400, 0, 450, 14)} />
+      <path className="sk" d={hedgeD(400, 800, 446, 14)} />
+      <Palm x={-330} y={450} h={190} />
+      <RoundTree x={-190} y={452} r={44} />
+      <Palm x={-60} y={450} h={150} flip />
+      <RoundTree x={470} y={448} r={38} />
+      <Palm x={600} y={448} h={200} flip />
+      <RoundTree x={740} y={450} r={46} />
+      <StringLights x1={-330} y1={262} x2={96} y2={300} sag={36} n={14} />
+      <StringLights x1={330} y1={318} x2={600} y2={250} sag={36} n={12} />
+      <GroundLantern x={-250} y={600} s={1.4} />
+      <GroundLantern x={-100} y={660} s={1.6} />
+      <GroundLantern x={520} y={640} s={1.5} />
+      <GroundLantern x={690} y={600} s={1.4} />
+      <FlowerStand x={-160} y={690} h={120} s={1.6} />
+      <FlowerStand x={600} y={690} h={120} s={1.6} />
+    </g>
+  )
+}
+
 function Bulbs() {
   const pts: [number, number][] = []
   for (let i = 1; i < 9; i++) { const t = i / 9; pts.push([96 + 104 * t, (1 - t) * (1 - t) * 300 + 2 * (1 - t) * t * 334 + t * t * 290]) }
@@ -100,8 +148,10 @@ export function DateBoard() {
     mark.style.strokeDasharray = `${L}`
     mark.style.strokeDashoffset = `${L}`
     tl.set(q('.ar-date'), { clipPath: 'inset(0% 0% 0% 100%)' })
+    drawSketch(tl, el.querySelector('.date-wide'), { at: 0, duration: 2.4, washAt: 1.8 })
     drawSketch(tl, el.querySelector('.entrance'), { at: 0.1, duration: 2.4, washAt: 1.8 })
-    tl.from(q('.arch-flowers > g'), { opacity: 0, duration: 0.6, stagger: 0.06 }, 1.4)
+    drawSketch(tl, el.querySelector('.path-decor'), { at: 1.4, duration: 1 })
+    tl.from(q('.arch-flowers > g, .prop-bloom'), { opacity: 0, duration: 0.6, stagger: 0.04 }, 1.4)
       .from(q('.bulbs'), { opacity: 0, duration: 1 }, 1.8)
       .from(q('.board-fill'), { opacity: 0, duration: 0.6 }, 1.9)
       .from(q('.hdr'), { opacity: 0, y: 8, duration: 0.8, stagger: 0.15 }, 1.2)
@@ -115,9 +165,10 @@ export function DateBoard() {
   return (
     <section ref={root} className="scene h-[100svh]">
       <Page>
-        <Sketch>
+        <Sketch wide={<DateWide />}>
           <g className="entrance"><EntranceSketch /></g>
-          <rect className="board-fill" x={211} y={445} width={168} height={138} rx={4} fill="#fdfaf4" opacity={0.85} />
+          <PathDecor />
+          <rect className="board-fill" x={211} y={445} width={168} height={138} rx={4} fill="#fdfaf4" opacity={1} />
           <Bulbs />
           <ArchFlowers />
         </Sketch>

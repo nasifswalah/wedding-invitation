@@ -90,3 +90,45 @@ export function SketchLink({
     <button className={cls} onClick={onClick}>{inner}</button>
   )
 }
+
+/** The main call-to-action: a filled, softly pulsing pill with a pencil outline and a hand-written hint. */
+export function DirectionsButton({ href, delay = 0, hint = 'tap to open the map' }: { href: string; delay?: number; hint?: string }) {
+  return (
+    <motion.div
+      className="flex flex-col items-center"
+      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group relative isolate inline-flex min-h-[52px] items-center gap-2.5 rounded-full px-7 font-[family-name:var(--font-display)] text-[0.78rem] tracking-[0.22em] text-[#fffaf5] uppercase transition-transform active:scale-95"
+        style={{ background: 'linear-gradient(135deg, #a8697a 0%, #c98e9c 55%, #b07585 100%)', boxShadow: '0 10px 24px -12px rgba(156,100,115,0.9)' }}
+      >
+        {/* soft pulse */}
+        <span className="pointer-events-none absolute inset-0 -z-10 animate-ping rounded-full bg-[var(--color-mauve)] opacity-25 [animation-duration:2.4s]" />
+        {/* pencil outline drawn around it */}
+        <svg viewBox="0 0 200 60" preserveAspectRatio="none" className="pointer-events-none absolute -inset-x-2.5 -inset-y-2 h-[calc(100%+1rem)] w-[calc(100%+1.25rem)] overflow-visible" aria-hidden>
+          <motion.path
+            d={roughEllipse(100, 30, 98, 28, 9)}
+            fill="none" stroke="#9c6473" strokeWidth={1.2} strokeLinecap="round" vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: delay + 0.4 }}
+          />
+        </svg>
+        <motion.svg width="16" height="16" viewBox="0 0 24 24" aria-hidden animate={{ y: [0, -3, 0] }} transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}>
+          <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+        </motion.svg>
+        Get directions
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"><path d="M3 9 L9 3 M4 3 H9 V8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
+      </a>
+      <span className="mt-2 flex items-center gap-1 font-[family-name:var(--font-hand)] text-[1.05rem] text-[var(--color-blue-deep)]">
+        <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden><path d="M20 12 C 14 12 8 10 4 3 M4 3 L3 8 M4 3 L9 4" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" /></svg>
+        {hint}
+      </span>
+    </motion.div>
+  )
+}

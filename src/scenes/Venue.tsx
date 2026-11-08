@@ -1,91 +1,139 @@
 import { useRef } from 'react'
 import { useSceneTimeline, useSceneMode } from '../story/scene'
-import { drawSketch, SketchLink } from '../sketch/sketch'
+import { drawSketch, DirectionsButton } from '../sketch/sketch'
 import { wedding } from '../config/wedding'
-import { Hydrangea, RoseHead } from '../components/garden/botanical'
-import { Page, Sketch, at } from './Page'
+import { Hydrangea, RoseHead, Spray } from '../components/garden/botanical'
+import { Page, Sketch, at, usePageWide } from './Page'
+import { FlowerStand, GroundLantern, GuestTable, Palm, RoundTree, StringLights, chairPath, hedge } from './props'
 
+const HZ = 472 // horizon / ground line
 const ROWS = [500, 532, 570, 615, 668]
-const edgeL = (y: number) => 188 - ((y - 472) * 68) / 228
-const edgeR = (y: number) => 212 + ((y - 472) * 68) / 228
+const edgeL = (y: number) => 188 - ((y - HZ) * 68) / 228
+const edgeR = (y: number) => 212 + ((y - HZ) * 68) / 228
+const scaleAt = (y: number) => 0.55 + ((y - HZ) / 228) * 0.95
 
-function chair(x: number, s: number) {
-  const w = 14 * s
-  const l = x - w / 2, r = x + w / 2
-  return `M${l.toFixed(1)} 0 L${l.toFixed(1)} ${(-10 * s).toFixed(1)} M${r.toFixed(1)} 0 L${r.toFixed(1)} ${(-10 * s).toFixed(1)} M${(l - 1).toFixed(1)} ${(-10 * s).toFixed(1)} L${(r + 1).toFixed(1)} ${(-10 * s).toFixed(1)} M${l.toFixed(1)} ${(-10 * s).toFixed(1)} L${l.toFixed(1)} ${(-24 * s).toFixed(1)} Q${x.toFixed(1)} ${(-29 * s).toFixed(1)} ${r.toFixed(1)} ${(-24 * s).toFixed(1)} L${r.toFixed(1)} ${(-10 * s).toFixed(1)}`
-}
-
-/** One path per row and side: chairs either side of the aisle, in perspective. */
-function chairRows() {
+function chairRows(minX: number, maxX: number) {
   return ROWS.flatMap((y) => {
-    const k = (y - 472) / 228
-    const s = 0.55 + k * 0.95
+    const s = scaleAt(y)
     const left: string[] = [], right: string[] = []
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 40; i++) {
       const xl = edgeL(y) - 10 * s - i * 18 * s
       const xr = edgeR(y) + 10 * s + i * 18 * s
-      if (xl > -10) left.push(chair(xl, s))
-      if (xr < 410) right.push(chair(xr, s))
+      if (xl > minX) left.push(chairPath(xl, s))
+      if (xr < maxX) right.push(chairPath(xr, s))
     }
     return [{ y, d: left.join(' ') }, { y, d: right.join(' ') }]
   })
 }
 
-function OpenVenueSketch() {
+/** Floral canopy (mandap) at the end of the aisle: posts, drapes, hanging florals, a small stage with the couple's seat. */
+function Canopy() {
+  return (
+    <g>
+      <path className="wash" d="M160 478 L240 478 L236 470 L164 470 Z" fill="#d3e0ea" opacity="0.8" />
+      <path className="wash" d="M170 400 C 182 426 174 452 182 470 L170 470Z M230 400 C 218 426 226 452 218 470 L230 470Z" fill="#c98e9c" opacity="0.6" filter="url(#wash)" />
+      <path className="wash" d="M170 398 C 185 410 215 410 230 398 L230 404 C 215 416 185 416 170 404Z" fill="#fdfaf4" opacity="0.9" />
+      <path className="sk sk-ink" d="M170 470 L170 396 M230 470 L230 396 M163 396 L237 396 M163 390 L237 390 M163 390 L163 396 M237 390 L237 396" />
+      <path className="sk sk-light" d="M178 470 L178 404 M222 470 L222 404 M170 404 C 185 416 215 416 230 404" />
+      <path className="sk sk-light" d="M158 478 L242 478 M158 470 L242 470 M158 470 L158 478 M242 470 L242 478" />
+      {/* the couple's seat */}
+      <path className="sk sk-light" d="M188 468 L188 456 Q 200 448 212 456 L212 468 M186 462 L214 462" />
+    </g>
+  )
+}
+
+function CanopyFlowers() {
+  const tops: [number, number, 'h' | 'm' | 'p' | 'i', number][] = [
+    [164, 391, 'h', 9], [178, 388, 'm', 6], [192, 387, 'h', 8], [208, 387, 'p', 6], [222, 388, 'h', 8], [236, 391, 'i', 6],
+    [170, 468, 'h', 7], [230, 468, 'h', 7], [176, 466, 'm', 5], [224, 466, 'p', 5],
+  ]
+  return (
+    <g className="venue-flowers">
+      {tops.map(([x, y, k, r], i) => (
+        <g key={i} transform={`translate(${x} ${y})`}>
+          {k === 'h' ? <Hydrangea r={r} seed={i} tone={i % 3 ? 'blue' : 'lilac'} /> : <RoseHead r={r} tone={k === 'm' ? 'mauve' : k === 'p' ? 'peach' : 'ivory'} seed={i} />}
+        </g>
+      ))}
+      {/* short hanging strands under the canopy beam */}
+      {[176, 188, 200, 212, 224].map((x, i) => (
+        <g key={`s${i}`} transform={`translate(${x} 398)`}>
+          <line x1={0} y1={0} x2={0} y2={10 + (i % 2) * 6} stroke="#8a9a8f" strokeWidth={0.4} />
+          <g transform={`translate(0 ${12 + (i % 2) * 6})`}>{i % 2 ? <RoseHead r={2.6} tone="mauve" seed={i} /> : <Spray r={3} dir={-1} />}</g>
+        </g>
+      ))}
+    </g>
+  )
+}
+
+function VenueSketch({ wide }: { wide: boolean }) {
+  const minX = wide ? -400 : -10, maxX = wide ? 800 : 410
+  const chairMin = wide ? -70 : -10, chairMax = wide ? 470 : 410
   return (
     <g filter="url(#pencil)">
-      <path className="wash" d="M0 470 L400 470 L400 700 L0 700Z" fill="#cbd8d0" opacity="0.35" filter="url(#wash)" />
-      <path className="sk sk-light" d="M0 470 L400 470" />
-      {/* palms behind */}
-      <path className="sk" d="M58 470 C 56 420 64 370 80 332 M64 470 C 62 420 70 372 85 334" />
-      <path className="sk" d="M82 332 C 60 318 40 326 26 344 M82 332 C 70 306 50 300 34 306 M82 332 C 92 308 112 302 130 310 M82 332 C 102 326 118 336 124 354 M82 332 C 80 312 84 298 92 288" />
-      <path className="sk" d="M346 470 C 348 420 340 372 326 330 M340 470 C 342 420 335 374 321 332" />
-      <path className="sk" d="M323 330 C 344 316 364 324 378 342 M323 330 C 334 304 354 298 370 304 M323 330 C 312 306 292 300 274 308 M323 330 C 304 324 288 334 282 352 M323 330 C 326 310 322 296 314 286" />
-      {/* floral canopy (mandap) at the end of the aisle */}
-      <path className="wash" d="M172 404 C 182 430 176 455 182 472 L172 472Z M228 404 C 218 430 224 455 218 472 L228 472Z" fill="#c98e9c" opacity="0.6" filter="url(#wash)" />
-      <path className="sk sk-ink" d="M172 472 L172 402 M228 472 L228 402 M164 402 L236 402 M164 396 L236 396" />
-      <path className="sk sk-light" d="M160 478 L240 478 M160 472 L160 478 M240 472 L240 478" />
-      <path className="sk sk-light" d="M190 466 L190 456 Q 194 452 198 456 L198 466 M202 466 L202 456 Q 206 452 210 456 L210 466" />
-      {/* string lights */}
-      <path className="sk sk-light" d="M84 352 Q 140 404 200 392 Q 262 404 322 350" />
-      {/* aisle */}
-      <path className="sk" d="M188 472 L120 700 M212 472 L280 700" />
-      <path className="sk sk-light" d={ROWS.map((y) => `M${(edgeL(y) + 4).toFixed(0)} ${y} L${(edgeR(y) - 4).toFixed(0)} ${y}`).join(' ')} />
-      {/* chairs */}
-      {chairRows().map((r, i) => (
+      <path className="wash" d={`M${minX} ${HZ} L${maxX} ${HZ} L${maxX} 700 L${minX} 700Z`} fill="#cbd8d0" opacity="0.35" filter="url(#wash)" />
+      {/* tree line behind the lawn */}
+      <path className="sk sk-light" d={hedge(minX, 150, HZ - 2, wide ? 18 : 6, -4)} />
+      <path className="sk sk-light" d={hedge(250, maxX, HZ - 2, wide ? 18 : 6, 4)} />
+      <path className="sk sk-light" d={`M${minX} ${HZ} L${maxX} ${HZ}`} />
+      <Palm x={58} y={HZ} h={150} />
+      <Palm x={340} y={HZ} h={156} flip />
+      <Canopy />
+      {/* aisle with an ivory runner */}
+      <path className="wash" d={`M192 ${HZ} L208 ${HZ} L262 700 L138 700Z`} fill="#fdfaf4" opacity="0.9" />
+      <path className="sk" d={`M188 ${HZ} L120 700 M212 ${HZ} L280 700`} />
+      <path className="sk sk-light" d={`M192 ${HZ} L138 700 M208 ${HZ} L262 700`} />
+      {chairRows(chairMin, chairMax).map((r, i) => (
         <path key={i} className="sk sk-light" transform={`translate(0 ${r.y})`} d={r.d} />
       ))}
     </g>
   )
 }
 
-function VenueFlowers() {
+function AisleDecor() {
   return (
-    <g className="venue-flowers">
-      {[[166, 398, 'h', 9], [182, 395, 'm', 6], [200, 394, 'h', 10], [218, 395, 'p', 6], [234, 398, 'h', 9], [172, 470, 'h', 7], [228, 470, 'i', 6]].map(([x, y, k, r], i) => (
-        <g key={i} transform={`translate(${x} ${y})`}>
-          {k === 'h' ? <Hydrangea r={r as number} seed={i} tone={i % 2 ? 'lilac' : 'blue'} /> : <RoseHead r={r as number} tone={k === 'm' ? 'mauve' : k === 'p' ? 'peach' : 'ivory'} seed={i} />}
-        </g>
-      ))}
-      {/* petal bowls (urli) along the aisle */}
-      {[532, 615].flatMap((y, i) => [edgeL(y) + 10, edgeR(y) - 10].map((x, j) => (
-        <g key={`${i}${j}`} transform={`translate(${x} ${y + 4})`}>
-          <ellipse rx={7 + i * 3} ry={2.6 + i} fill="#c9ab8c" opacity={0.75} />
-          <ellipse cy={-1.2} rx={5.5 + i * 2.5} ry={1.8 + i * 0.8} fill={j ? '#e7a6b3' : '#efc1a8'} />
-        </g>
-      )))}
+    <g className="aisle-decor">
+      {[515, 585, 660].map((y, i) => {
+        const s = scaleAt(y)
+        return (
+          <g key={y}>
+            <FlowerStand x={edgeL(y) - 2} y={y} h={36 * s} s={s * 0.85} />
+            <FlowerStand x={edgeR(y) + 2} y={y} h={36 * s} s={s * 0.85} />
+            {i < 2 && <GroundLantern x={(edgeL(y + 30) + 6)} y={y + 30} s={s * 0.6} />}
+            {i < 2 && <GroundLantern x={(edgeR(y + 30) - 6)} y={y + 30} s={s * 0.6} />}
+          </g>
+        )
+      })}
+      {/* petals scattered on the runner */}
+      {Array.from({ length: 18 }, (_, i) => {
+        const y = 490 + ((i * 37) % 200)
+        const x = 200 + (((i * 53) % 100) / 100 - 0.5) * (y - 460) * 0.45
+        return <ellipse key={i} cx={x} cy={y} rx={1.8 + (y - 470) / 120} ry={1} fill={i % 3 ? '#e7a6b3' : '#efc1a8'} opacity={0.8} transform={`rotate(${i * 40} ${x} ${y})`} />
+      })}
     </g>
   )
 }
 
-function Bulbs() {
-  const pts: [number, number][] = []
-  for (let i = 1; i < 8; i++) { const t = i / 8; pts.push([84 + 116 * t, (1 - t) * (1 - t) * 352 + 2 * (1 - t) * t * 404 + t * t * 392]) }
-  for (let i = 1; i < 8; i++) { const t = i / 8; pts.push([200 + 122 * t, (1 - t) * (1 - t) * 392 + 2 * (1 - t) * t * 404 + t * t * 350]) }
-  return <g className="bulbs">{pts.map(([x, y], i) => <circle key={i} cx={x} cy={y + 3} r={2} fill={i % 2 ? '#efc1a8' : '#fbe7da'} className="lantern-glow" style={{ animationDelay: `${-i * 0.4}s` }} />)}</g>
+/** Only on wide pages: guest tables, more palms and trees, lights across the lawn. */
+function VenueWide() {
+  return (
+    <g className="venue-wide" filter="url(#pencil)">
+      <Palm x={-360} y={HZ} h={170} />
+      <RoundTree x={-250} y={HZ} r={36} />
+      <Palm x={-110} y={HZ} h={140} flip />
+      <RoundTree x={520} y={HZ} r={34} />
+      <Palm x={640} y={HZ} h={168} flip />
+      <RoundTree x={760} y={HZ} r={40} />
+      <GuestTable x={-300} y={640} s={1.25} />
+      <GuestTable x={-140} y={600} s={1} />
+      <GuestTable x={540} y={600} s={1} />
+      <GuestTable x={700} y={640} s={1.25} />
+      <GroundLantern x={-60} y={690} s={1.2} />
+      <GroundLantern x={460} y={690} s={1.2} />
+    </g>
+  )
 }
 
-/** Scene 5 — an open-air ceremony (aisle, chairs, floral canopy); the address is written above with a directions link. */
+/** Scene 5 — an open-air ceremony (aisle, chairs, floral canopy); the address is written above with a directions button. */
 export function Venue() {
   const root = useRef<HTMLElement>(null)
   const mode = useSceneMode()
@@ -93,8 +141,10 @@ export function Venue() {
   const lines = v.address.split(',').map((s) => s.trim())
 
   useSceneTimeline(root, (tl, q, el) => {
+    drawSketch(tl, el.querySelector('.venue-wide'), { at: 0, duration: 2.4, washAt: 1.8 })
     drawSketch(tl, el.querySelector('.venue'), { at: 0.1, duration: 2.4, washAt: 1.8 })
-    tl.from(q('.venue-flowers > g'), { opacity: 0, duration: 0.5, stagger: 0.05 }, 1.6)
+    drawSketch(tl, el.querySelector('.aisle-decor'), { at: 1.4, duration: 1.2 })
+    tl.from(q('.venue-flowers > g, .prop-bloom'), { opacity: 0, duration: 0.5, stagger: 0.03 }, 1.6)
       .from(q('.bulbs'), { opacity: 0, duration: 1 }, 2)
       .from(q('.v-in'), { opacity: 0, y: 10, filter: 'blur(4px)', duration: 0.8, stagger: 0.18 }, 1.2)
   })
@@ -102,27 +152,20 @@ export function Venue() {
   return (
     <section ref={root} className="scene">
       <div className="relative h-[100svh]">
-      <Page>
-        <Sketch>
-          <g className="venue"><OpenVenueSketch /></g>
-          <Bulbs />
-          <VenueFlowers />
-        </Sketch>
-        <div style={at(200, 70, 360)} className="flex flex-col items-center text-center">
-          <p className="v-in eyebrow !text-[clamp(0.55rem,2.6cqw,0.72rem)]">Finding your way</p>
-          <p className="v-in mt-1 font-[family-name:var(--font-script)] text-[clamp(2rem,10cqw,3rem)] leading-tight text-[var(--color-ink)]">The Venue</p>
-          <div className="v-in mt-3 hand text-[clamp(1.25rem,6.2cqw,1.75rem)] leading-[1.2] text-[var(--color-ink)]">
-            <p className="text-[var(--color-mauve-deep)]">{v.name}</p>
-            {lines.map((l) => <p key={l}>{l}</p>)}
+        <Page>
+          <VenueSketchLayer />
+          <div style={at(200, 64, 360)} className="flex flex-col items-center text-center">
+            <p className="v-in eyebrow !text-[clamp(0.55rem,2.6cqw,0.72rem)]">Finding your way</p>
+            <p className="v-in mt-1 font-[family-name:var(--font-script)] text-[clamp(2rem,10cqw,3rem)] leading-tight text-[var(--color-ink)]">The Venue</p>
+            <div className="v-in mt-2 hand text-[clamp(1.2rem,6cqw,1.7rem)] leading-[1.18] text-[var(--color-ink)]">
+              <p className="text-[var(--color-mauve-deep)]">{v.name}</p>
+              {lines.map((l) => <p key={l}>{l}</p>)}
+            </div>
+            <div className="v-in mt-4">
+              <DirectionsButton href={v.mapsUrl} delay={mode === 'trailer' ? 2.2 : 0.3} />
+            </div>
           </div>
-          <div className="v-in mt-4">
-            <SketchLink href={v.mapsUrl} external delay={mode === 'trailer' ? 2.4 : 0.4}>
-              <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" /></svg>
-              Get directions
-            </SketchLink>
-          </div>
-        </div>
-      </Page>
+        </Page>
       </div>
       {mode === 'scroll' && v.directions.length > 0 && (
         <ol className="v-in mx-auto max-w-md space-y-2 px-8 pb-12 text-[1.02rem] leading-snug text-[var(--color-ink)]">
@@ -132,5 +175,20 @@ export function Venue() {
         </ol>
       )}
     </section>
+  )
+}
+
+function VenueSketchLayer() {
+  const wide = usePageWide()
+  return (
+    <Sketch wide={<VenueWide />}>
+      <g className="venue"><VenueSketch wide={wide} /></g>
+      <StringLights x1={70} y1={330} x2={200} y2={386} sag={14} n={7} />
+      <StringLights x1={200} y1={386} x2={330} y2={326} sag={14} n={7} />
+      {wide && <StringLights x1={-350} y1={300} x2={70} y2={330} sag={40} n={14} />}
+      {wide && <StringLights x1={330} y1={326} x2={650} y2={306} sag={40} n={14} />}
+      <CanopyFlowers />
+      <AisleDecor />
+    </Sketch>
   )
 }

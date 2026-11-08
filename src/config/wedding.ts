@@ -23,8 +23,8 @@ export type Venue = {
   directions: string[]
   /** Link opened by "Open in Google Maps" */
   mapsUrl: string
-  /** Search query or "lat,lng" used for the embedded map */
-  embedQuery: string
+  /** (not shown any more — kept for an optional map later) */
+  embedQuery?: string
 }
 
 export type WeddingEvent = {
@@ -58,48 +58,30 @@ export const wedding = {
   /** Short names used in the hero monogram and share text */
   shortNames: { bride: 'Ayisha', groom: 'Fahad' },
 
-  events: [
-    {
-      id: 'nikah',
-      title: 'Nikah',
-      arabicTitle: 'عقد النكاح',
-      start: '2027-01-17T11:00:00+05:30',
-      end: '2027-01-17T13:00:00+05:30',
-      note: 'Followed by lunch',
-      venue: {
-        name: 'Masjid Al-Noor Auditorium',
-        address: 'Mavoor Road, Kozhikode, Kerala 673004',
-        directions: [
-          'From Kozhikode KSRTC bus stand, head east on Mavoor Road for about 2 km.',
-          'Pass the Arayidathupalam junction and keep straight.',
-          'The auditorium is on the left, right after Masjid Al-Noor — look for the green arch.',
-          'Parking is available behind the auditorium.',
-        ],
-        mapsUrl: 'https://maps.google.com/?q=Mavoor+Road+Kozhikode',
-        embedQuery: 'Mavoor Road, Kozhikode, Kerala',
-      },
+  /** The wedding event (one session). */
+  event: {
+    id: 'nikah',
+    title: 'Nikah',
+    arabicTitle: 'عقد النكاح',
+    start: '2027-01-17T11:00:00+05:30',
+    end: '2027-01-17T13:00:00+05:30',
+    note: 'Followed by lunch',
+    venue: {
+      name: 'Masjid Al-Noor Auditorium',
+      address: 'Mavoor Road, Kozhikode, Kerala 673004',
+      directions: [
+        'From Kozhikode KSRTC bus stand, head east on Mavoor Road for about 2 km.',
+        'Pass the Arayidathupalam junction and keep straight.',
+        'The auditorium is on the left, right after Masjid Al-Noor — look for the green arch.',
+        'Parking is available behind the auditorium.',
+      ],
+      mapsUrl: 'https://maps.google.com/?q=Mavoor+Road+Kozhikode',
+      embedQuery: 'Mavoor Road, Kozhikode, Kerala',
     },
-    {
-      id: 'walima',
-      title: 'Walima Reception',
-      arabicTitle: 'وليمة العرس',
-      start: '2027-01-17T19:00:00+05:30',
-      end: '2027-01-17T22:00:00+05:30',
-      note: 'Dinner will be served',
-      venue: {
-        name: 'Rose Garden Convention Centre',
-        address: 'Kottakkal Road, Malappuram, Kerala 676505',
-        directions: [
-          'From Malappuram Kunnummal junction, take the road towards Kottakkal.',
-          'Drive about 3 km and pass the Govt. College on your right.',
-          'Turn left at the petrol pump; the convention centre is 200 m ahead.',
-          'Valet parking will be available at the entrance.',
-        ],
-        mapsUrl: 'https://maps.google.com/?q=Malappuram+Kottakkal+Road',
-        embedQuery: 'Kottakkal Road, Malappuram, Kerala',
-      },
-    },
-  ] satisfies WeddingEvent[],
+  } satisfies WeddingEvent,
+
+  /** Photos of the couple — leave null to use the hand-drawn sketch. */
+  couplePhoto: null as string | null,
 
   /**
    * The Hijri date is calculated automatically (Umm al-Qura).

@@ -1,21 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import { wedding } from './config/wedding'
 import { GardenDefs } from './components/garden/GardenDefs'
 import { PetalsCanvas } from './components/garden/PetalsCanvas'
-import { IntroCalligraphy } from './components/intro/IntroCalligraphy'
-import { Hero } from './components/sections/Hero'
-import { VineTransition } from './components/transitions/VineTransition'
-import { DateTime } from './components/sections/DateTime'
-import { Events } from './components/sections/Events'
-import { Location } from './components/sections/Location'
-import { Message } from './components/sections/Message'
-import { Closing } from './components/sections/Closing'
 import { MusicToggle } from './components/ui/MusicToggle'
 import { prefersReducedMotion } from './lib/motion'
+import { Trailer, type TrailerScene } from './story/Trailer'
+import { SceneMode } from './story/scene'
+import { Landing } from './scenes/Landing'
+import { Names } from './scenes/Names'
+import { DateBoard } from './scenes/DateBoard'
+import { TimeScene } from './scenes/TimeScene'
+import { Venue } from './scenes/Venue'
+import { Invitation } from './scenes/Invitation'
+import { GrowingVine } from './scenes/GrowingVine'
 
 function useMusic(src: string | null) {
   const audio = useRef<HTMLAudioElement | null>(null)
@@ -39,20 +40,29 @@ function useMusic(src: string | null) {
     if (!a) return
     gsap.to(a, { volume: v, duration: 1.6, ease: 'sine.inOut', onComplete: () => { if (v === 0) a.pause() } })
   }
-  const play = () => {
+  const toggle = () => {
     const a = audio.current
     if (!a) return
-    a.play().then(() => { setPlaying(true); fadeTo(0.55) }).catch(() => {})
+    if (playing) { setPlaying(false); fadeTo(0) } else a.play().then(() => { setPlaying(true); fadeTo(0.55) }).catch(() => {})
   }
-  const toggle = () => {
-    if (playing) { setPlaying(false); fadeTo(0) } else play()
-  }
-  return { available, playing, play, toggle }
+  return { available, playing, toggle }
 }
 
+/** Trailer timing (seconds). The names scene ends on a gust that carries it away. */
+const NamesTrailer = () => <Names gustAt={7.6} />
+const SCENES: TrailerScene[] = [
+  { id: 'landing', C: Landing, duration: 9 },
+  { id: 'names', C: NamesTrailer, duration: 8.6, exit: 'gust' },
+  { id: 'date', C: DateBoard, duration: 10 },
+  { id: 'time', C: TimeScene, duration: 7.5 },
+  { id: 'venue', C: Venue, duration: 7.5 },
+  { id: 'invite', C: Invitation, duration: 11 },
+]
+
 export default function App() {
-  // ?skip in the URL jumps straight to the invitation (handy while editing)
-  const [introDone, setIntroDone] = useState(() => new URLSearchParams(location.search).has('skip'))
+  // ?skip jumps straight to the scroll page; reduced-motion users skip the trailer too
+  const [free, setFree] = useState(() => new URLSearchParams(location.search).has('skip') || prefersReducedMotion())
+  const [sceneIdx, setSceneIdx] = useState(0)
   const music = useMusic(wedding.music)
 
   // smooth scrolling, synced with GSAP's ticker so ScrollTrigger stays frame-perfect
@@ -67,37 +77,52 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    document.body.classList.toggle('locked', !introDone)
-    if (introDone) {
+    document.body.classList.toggle('locked', !free)
+    if (free) {
       window.scrollTo(0, 0)
-      // fonts/layout settle after intro → recompute scroll positions
       document.fonts?.ready.then(() => ScrollTrigger.refresh())
-      setTimeout(() => ScrollTrigger.refresh(), 600)
+      const t = setTimeout(() => ScrollTrigger.refresh(), 800)
+      return () => clearTimeout(t)
     }
-  }, [introDone])
+  }, [free])
 
-  const finishIntro = useCallback(() => setIntroDone(true), [])
-  const playMusic = music.play
+  const finish = useCallback(() => setFree(true), [])
+  const showPetals = free || sceneIdx >= 1
 
   return (
     <>
       <GardenDefs />
+
       <AnimatePresence>
-        {!introDone && <IntroCalligraphy key="intro" onOpen={playMusic} onDone={finishIntro} />}
+        {!free && (
+          <motion.div key="trailer" exit={{ opacity: 0, transition: { duration: 1 } }}>
+            <Trailer scenes={SCENES} onDone={finish} onSceneChange={setSceneIdx} />
+          </motion.div>
+        )}
       </AnimatePresence>
 
-      <main className="relative overflow-x-clip">
-        <Hero revealed={introDone} />
-        <VineTransition />
-        <DateTime />
-        <Events />
-        <Location />
-        <Message />
-        <Closing />
-      </main>
+      {free && (
+        <SceneMode.Provider value="scroll">
+          <motion.main
+            className="relative overflow-x-clip"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 1.2, delay: 0.4 } }}
+          >
+            <Names />
+            <GrowingVine />
+            <DateBoard />
+            <GrowingVine variant={1} />
+            <TimeScene />
+            <GrowingVine />
+            <Venue />
+            <GrowingVine variant={1} />
+            <Invitation />
+          </motion.main>
+        </SceneMode.Provider>
+      )}
 
-      {introDone && <PetalsCanvas />}
-      <MusicToggle playing={music.playing} available={music.available && introDone} onToggle={music.toggle} />
+      {showPetals && <PetalsCanvas />}
+      <MusicToggle playing={music.playing} available={music.available} onToggle={music.toggle} />
     </>
   )
 }

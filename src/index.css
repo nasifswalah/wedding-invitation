@@ -1,25 +1,27 @@
 @import 'tailwindcss';
 
+/* Palette taken from the bride's outfit: powder-blue gown, rose-mauve dupatta,
+   champagne / peach embroidery flowers, on cream paper. */
 @theme {
-  --color-ivory: #f7f1e3;
-  --color-ivory-deep: #efe5cf;
-  --color-parchment: #fbf7ee;
-  --color-sage: #8fa584;
-  --color-sage-deep: #5d7556;
-  --color-moss: #3f5541;
-  --color-blush: #e8b9ad;
-  --color-rose: #c98577;
-  --color-gold: #b8924a;
-  --color-gold-light: #d9bd7f;
-  --color-gold-deep: #8a6a2f;
-  --color-ink: #3b3428;
-  --color-ink-soft: #6b604e;
+  --color-cream: #f8f3ea;
+  --color-paper: #fdfaf4;
+  --color-blue: #a9bfcf;
+  --color-blue-soft: #d3e0ea;
+  --color-blue-deep: #6f8aa1;
+  --color-mauve: #c98e9c;
+  --color-mauve-soft: #ead2d6;
+  --color-mauve-deep: #9c6473;
+  --color-peach: #efc1a8;
+  --color-champagne: #e3cfb4;
+  --color-sage: #8fa39a;
+  --color-ink: #3d4b5c;
+  --color-pencil: #6b7a8c;
 
   --font-script: 'Great Vibes', cursive;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-display: 'Cinzel', 'Cormorant Garamond', serif;
+  --font-hand: 'Caveat', 'Cormorant Garamond', cursive;
   --font-arabic: 'Amiri', 'Times New Roman', serif;
-  --font-ruqaa: 'Aref Ruqaa', 'Amiri', serif;
 }
 
 :root {
@@ -27,7 +29,7 @@
 }
 
 html {
-  background: var(--color-ivory);
+  background: var(--color-cream);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
@@ -43,13 +45,17 @@ html.lenis body {
 body {
   margin: 0;
   min-height: 100svh;
-  background: var(--color-ivory);
   color: var(--color-ink);
   font-family: var(--font-serif);
   font-size: 18px;
   line-height: 1.55;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* cream paper with a faint grain */
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(120% 80% at 50% 0%, rgba(253, 250, 244, 0.9), rgba(253, 250, 244, 0) 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.32 0 0 0 0 0.28 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 body.locked {
@@ -58,7 +64,7 @@ body.locked {
 }
 
 ::selection {
-  background: var(--color-gold-light);
+  background: var(--color-blue-soft);
   color: var(--color-ink);
 }
 
@@ -68,90 +74,50 @@ body.locked {
   unicode-bidi: isolate;
 }
 
-/* Gold foil text */
-.gold-text {
-  background: linear-gradient(110deg, #8a6a2f 0%, #c9a65e 28%, #f0dca4 45%, #b8924a 62%, #8a6a2f 100%);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: foil 7s ease-in-out infinite alternate;
-  /* room for script swashes, which overhang their box and would be clipped */
-  padding: 0.05em 0.14em 0.1em;
-  margin: -0.05em -0.14em -0.1em;
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-pencil);
 }
-@keyframes foil {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
+
+.hand {
+  font-family: var(--font-hand);
+}
+
+/* A scene: full screen in the trailer, a tall section when scrolling */
+.scene {
+  position: relative;
+  min-height: 100svh;
+  width: 100%;
+  overflow: hidden;
+}
+.scene-layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* sketch strokes */
+.sk {
+  fill: none;
+  stroke: var(--color-pencil);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sk-light {
+  stroke-opacity: 0.55;
+  stroke-width: 0.9;
+}
+.sk-ink {
+  stroke: var(--color-ink);
 }
 
 /* SVG plant parts pivot from their base */
 .pivot-base {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-}
-
-.card {
-  background: linear-gradient(180deg, rgba(251, 247, 238, 0.92), rgba(247, 241, 227, 0.88));
-  border: 1px solid rgba(184, 146, 74, 0.35);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.7) inset,
-    0 18px 40px -22px rgba(63, 85, 65, 0.45);
-  border-radius: 22px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 46px;
-  padding: 0.65rem 1.25rem;
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-  cursor: pointer;
-  user-select: none;
-}
-.btn:active {
-  transform: scale(0.97);
-}
-.btn-gold {
-  color: #fffaf0;
-  background: linear-gradient(135deg, #a7823f, #d4b26d 50%, #a7823f);
-  box-shadow: 0 10px 24px -12px rgba(138, 106, 47, 0.8);
-}
-.btn-outline {
-  color: var(--color-gold-deep);
-  border: 1px solid rgba(184, 146, 74, 0.6);
-  background: rgba(251, 247, 238, 0.6);
-}
-
-.eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--color-gold-deep);
-}
-
-/* ── living garden ─────────────────────────── */
-.ray {
-  position: absolute;
-  top: -20%;
-  height: 140%;
-  transform: rotate(-24deg);
-  transform-origin: top left;
-  background: linear-gradient(180deg, rgba(255, 246, 220, 0.55), rgba(255, 246, 220, 0) 75%);
-  filter: blur(14px);
-  animation: ray-breathe 9s ease-in-out infinite;
-}
-@keyframes ray-breathe {
-  0%, 100% { opacity: 0.35; transform: rotate(-24deg) translateX(0); }
-  50% { opacity: 0.85; transform: rotate(-21deg) translateX(18px); }
 }
 
 .bf-wing-l, .bf-wing-r {
@@ -169,21 +135,10 @@ body.locked {
   50% { transform: translateY(-8px); }
 }
 
-.firefly {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff3c4 0%, #f1d27a 40%, rgba(241, 210, 122, 0) 70%);
-  box-shadow: 0 0 12px 4px rgba(241, 210, 122, 0.45);
-  animation: firefly 7s ease-in-out infinite;
-}
-@keyframes firefly {
-  0% { transform: translate(0, 0); opacity: 0; }
-  20% { opacity: 1; }
-  50% { transform: translate(28px, -36px); opacity: 0.4; }
-  80% { opacity: 1; }
-  100% { transform: translate(-14px, -70px); opacity: 0; }
+.lantern-glow { animation: glow 3.2s ease-in-out infinite; }
+@keyframes glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
 }
 
 .scroll-cue { animation: cue 2.4s ease-in-out infinite; }
@@ -193,5 +148,5 @@ body.locked {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gold-text, .ray, .bf-wing-l, .bf-wing-r, .bf-bob, .firefly, .scroll-cue { animation: none; }
+  .bf-wing-l, .bf-wing-r, .bf-bob, .lantern-glow, .scroll-cue { animation: none; }
 }

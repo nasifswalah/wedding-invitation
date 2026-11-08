@@ -38,6 +38,32 @@ export function windAt(t: number, x: number, phase = 0) {
 }
 
 export const getWind = (x: number, phase = 0) => windAt(time, x, phase)
+
+/** A deliberate gust (story moment) — sweeps across the screen left → right. */
+export function triggerGust(strength = 2.4, duration = 2.2) {
+  gusts.push({ start: time, strength, duration, travel: 0.8 })
+  nextGust = time + 6
+  burst(Math.round(10 * strength))
+}
+
+/* ── petal event bus ─────────────────────────────────── */
+type BurstFn = (n: number) => void
+const burstListeners = new Set<BurstFn>()
+export function onBurst(fn: BurstFn) {
+  burstListeners.add(fn)
+  return () => { burstListeners.delete(fn) }
+}
+export function burst(n: number) {
+  burstListeners.forEach((fn) => fn(n))
+}
+
+/** Something petals can fly into (the bride's bouquet). */
+export type Attractor = { getPoint: () => { x: number; y: number } | null; onLand: () => void; rate?: number }
+let attractor: Attractor | null = null
+export function setAttractor(a: Attractor | null) {
+  attractor = a
+}
+export const getAttractor = () => attractor
 export const getTime = () => time
 
 type SwayItem = {

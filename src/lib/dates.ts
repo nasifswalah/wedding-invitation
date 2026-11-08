@@ -47,3 +47,50 @@ export function hijriParts(iso: string) {
 
 export const arabicWeekday = (iso: string) =>
   new Intl.DateTimeFormat('ar', { timeZone: TZ, weekday: 'long' }).format(new Date(iso))
+
+/* ── month grids for the calendar board ───────────────────── */
+
+export type MonthGrid = { title: string; year: number; firstWeekday: number; days: number; highlight: number }
+
+const DAY = 864e5
+const istDay = (d: Date) => new Date(new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(d) + 'T12:00:00Z')
+
+export function gregorianMonthGrid(iso: string): MonthGrid {
+  const d = istDay(new Date(iso))
+  const y = d.getUTCFullYear(), m = d.getUTCMonth()
+  return {
+    title: new Intl.DateTimeFormat('en-GB', { month: 'long', timeZone: 'UTC' }).format(d),
+    year: y,
+    firstWeekday: new Date(Date.UTC(y, m, 1)).getUTCDay(),
+    days: new Date(Date.UTC(y, m + 1, 0)).getUTCDate(),
+    highlight: d.getUTCDate(),
+  }
+}
+
+const hijriNumParts = (d: Date) => {
+  const parts = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn', {
+    timeZone: 'UTC', day: 'numeric', month: 'numeric', year: 'numeric',
+  }).formatToParts(d)
+  const n = (t: string) => Number(parts.find((p) => p.type === t)?.value.replace(/\D/g, ''))
+  return { day: n('day'), month: n('month'), year: n('year') }
+}
+
+/** The Hijri month containing the wedding day (honours `hijriOverride`). */
+export function hijriMonthGrid(iso: string): MonthGrid & { titleAr: string } {
+  const d = istDay(new Date(iso))
+  const h = hijriParts(iso)
+  const calc = hijriNumParts(d)
+  const start = new Date(d.getTime() - (h.day - 1) * DAY)
+  // month length: count forward from the calculated month start until the month changes
+  const calcStart = new Date(d.getTime() - (calc.day - 1) * DAY)
+  let days = 29
+  if (hijriNumParts(new Date(calcStart.getTime() + 29 * DAY)).month === calc.month) days = 30
+  return {
+    title: h.monthEn,
+    titleAr: h.monthAr,
+    year: h.year,
+    firstWeekday: start.getUTCDay(),
+    days,
+    highlight: h.day,
+  }
+}

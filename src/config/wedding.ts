@@ -101,8 +101,8 @@ export const wedding = {
   /** Put the audio file in /public/audio. Set to null to hide the music button. */
   music: '/audio/nasheed.mp3' as string | null,
 
-  /** Used by the WhatsApp share button. Defaults to the current page URL. */
-  shareText: 'You are warmly invited to the wedding of Athika & Shamil 💍🌸',
+  /** Message sent by the "Share on WhatsApp" button; the invitation link is added after it. */
+  shareText: "We're getting married! 💍 With the blessings of Allah, Athika & Shamil joyfully invite you to celebrate our Nikah. Open our invitation for all the details 💌",
 }
 
 export type Wedding = typeof wedding

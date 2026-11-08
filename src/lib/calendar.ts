@@ -11,7 +11,7 @@ export function googleCalendarUrl(e: WeddingEvent) {
     action: 'TEMPLATE',
     text: titleFor(e),
     dates: `${stamp(e.start)}/${stamp(e.end)}`,
-    details: `${e.note ?? ''}\nDirections: ${e.venue.mapsUrl}`,
+    details: `${e.note ? `${e.note}\n` : ''}Directions: ${e.venue.mapsUrl}`,
     location: `${e.venue.name}, ${e.venue.address}`,
   })
   return `https://calendar.google.com/calendar/render?${p.toString()}`

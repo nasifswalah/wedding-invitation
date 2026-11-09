@@ -48,7 +48,7 @@ export function GrowingVine({ variant = 0 }: { variant?: 0 | 1 }) {
   )
 
   return (
-    <div ref={root} className="relative flex h-[20svh] min-h-[130px] justify-center" aria-hidden>
+    <div ref={root} className="relative flex h-[32svh] min-h-[200px] justify-center" aria-hidden>
       <svg viewBox="0 0 200 420" className="h-full w-auto overflow-visible">
         <path className="vine" d={PATHS[variant]} fill="none" stroke="#6b7a8c" strokeWidth="1.4" strokeLinecap="round" filter="url(#pencil)" />
         {LEAVES.map((_, i) => (

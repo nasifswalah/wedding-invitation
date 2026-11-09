@@ -153,13 +153,13 @@ export function Invitation() {
     tl.from(q('.i-in'), { opacity: 0, y: 10, filter: 'blur(4px)', duration: 0.9, stagger: 0.2 }, 1.2)
 
     // after a short pause, the letter rises and reads itself
-    const L = story ? 7.2 : 3.6
+    const L = story ? 7.2 : 3
     const wide = !!(el.querySelector('.letter') as HTMLElement | null)?.dataset.wide
     tl.fromTo(q('.letter'), { opacity: 0, y: 70, rotate: -2.5 }, { opacity: 1, y: 0, rotate: 0, duration: 1.2, ease: 'power3.out' }, L)
     if (!wide) tl.to(q('.art-dim'), { opacity: 0.18, filter: 'blur(1.5px)', duration: 1 }, L)
     drawSketch(tl, el.querySelector('.letter-border'), { at: L + 0.5, duration: 0.9 })
     tl.from(q('.seal'), { scale: 0, rotate: -40, duration: 0.6, ease: 'back.out(2.2)' }, L + 0.7)
-      .from(q('.l-in'), { opacity: 0, y: 8, filter: 'blur(4px)', duration: 0.7, stagger: 0.36 }, L + 1)
+      .from(q('.l-in'), { opacity: 0, y: 6, filter: 'blur(3px)', duration: 0.45, stagger: 0.1 }, L + 0.6)
   })
 
   // the hand-drawn couple's bouquet fills with petals (not used with a photo/illustration)

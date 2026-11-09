@@ -56,7 +56,7 @@ const SCENES: TrailerScene[] = [
   { id: 'date', C: DateBoard, duration: 8.6 },
   { id: 'time', C: TimeScene, duration: 6.2 },
   { id: 'venue', C: Venue, duration: 6.2 },
-  { id: 'invite', C: Invitation, duration: wedding.coupleWalk && wedding.coupleFacing ? 15.5 : 12 },
+  { id: 'invite', C: Invitation, duration: wedding.coupleWalk && wedding.coupleFacing ? 15.5 : 9.5 },
 ]
 
 export default function App() {

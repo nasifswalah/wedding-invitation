@@ -176,7 +176,7 @@ export function DateBoard() {
         <div style={at(200, 70, 360)} className="text-center">
           <p className="hdr eyebrow !text-[clamp(0.55rem,2.6cqw,0.72rem)]">Save the date</p>
           <p className="hdr arabic mt-1 text-[clamp(1.1rem,5.5cqw,1.5rem)] text-[var(--color-mauve-deep)]">يَوْمٌ مُبَارَك</p>
-          <p className="hdr font-[family-name:var(--font-script)] text-[clamp(2rem,10cqw,3rem)] leading-tight text-[var(--color-ink)]">the blessed day</p>
+          <p className="hdr font-[family-name:var(--font-script)] text-[clamp(2rem,10cqw,3rem)] leading-tight text-[var(--color-ink)]">The blessed day</p>
         </div>
 
         {/* the signboard */}

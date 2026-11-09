@@ -9,6 +9,9 @@ export type SceneMode = 'trailer' | 'scroll'
 export const SceneMode = createContext<SceneMode>('scroll')
 export const useSceneMode = () => useContext(SceneMode)
 
+/** Starts the auto-playing story (trailer) from the scroll page; null when unavailable. */
+export const StartStory = createContext<(() => void) | null>(null)
+
 /**
  * Each scene builds ONE GSAP timeline. In the trailer it plays straight away;
  * on the scroll page it plays when the scene scrolls into view.

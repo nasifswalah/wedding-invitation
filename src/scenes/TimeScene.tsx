@@ -200,8 +200,8 @@ export function TimeScene() {
         </div>
         <div style={at(200, 428, 360)} className="flex flex-col items-center text-center">
           <p className="t-in font-[family-name:var(--font-display)] text-[clamp(2rem,11cqw,3.2rem)] leading-none text-[var(--color-ink)]">{s.time}</p>
-          <p className="t-in hand mt-1 text-[clamp(1rem,5cqw,1.4rem)] text-[var(--color-pencil)]">{e.note ?? 'onwards'}</p>
-          <p className="t-in hand mt-3 mb-2 text-[clamp(1rem,5cqw,1.3rem)] text-[var(--color-mauve-deep)]">counting the moments…</p>
+          <p className="t-in hand mt-1 text-[clamp(1rem,5cqw,1.4rem)] text-[var(--color-pencil)]">{e.note ?? 'Onwards'}</p>
+          <p className="t-in hand mt-3 mb-2 text-[clamp(1rem,5cqw,1.3rem)] text-[var(--color-mauve-deep)]">Counting the moments…</p>
           <SketchCountdown to={e.start} />
         </div>
       </Page>

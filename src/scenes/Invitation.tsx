@@ -137,7 +137,15 @@ export function Invitation() {
     drawSketch(tl, el.querySelector('.arch'), { at: 0.1, duration: 1.4, washAt: 1.2 })
     drawSketch(tl, el.querySelector('.arch-decor'), { at: 0.8, duration: 0.8 })
     tl.from(q('.arch-flower, .prop-bloom'), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%', duration: 0.7, stagger: 0.05, ease: 'back.out(2)' }, 0.8)
-    if (wedding.couplePhoto) {
+    const story = !!(wedding.coupleWalk && wedding.coupleFacing)
+    if (story) {
+      // walking away up the aisle, hand in hand… then turning to face each other
+      tl.fromTo(q('.c-walk'), { opacity: 0, y: 40, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 0.6)
+        .to(q('.c-walk'), { y: -26, scale: 0.9, duration: 3, ease: 'sine.inOut' }, 1.4)
+        .to(q('.c-walk-bob'), { y: -3, duration: 0.38, ease: 'sine.inOut', repeat: 7, yoyo: true }, 1.4)
+        .to(q('.c-walk'), { opacity: 0, filter: 'blur(4px)', duration: 0.9 }, 4.3)
+        .fromTo(q('.c-face'), { opacity: 0, scale: 0.94, filter: 'blur(6px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power2.out' }, 4.3)
+    } else if (wedding.couplePhoto) {
       tl.from(q('.couple-photo'), { opacity: 0, y: 28, scale: 0.97, filter: 'blur(8px)', duration: 1.8, ease: 'power2.out' }, 0.7)
     } else {
       drawSketch(tl, el.querySelector('.couple'), { at: 0.9, duration: 2.6, washAt: 2.8 })
@@ -145,7 +153,7 @@ export function Invitation() {
     tl.from(q('.i-in'), { opacity: 0, y: 10, filter: 'blur(4px)', duration: 0.9, stagger: 0.2 }, 1.2)
 
     // after a short pause, the letter rises and reads itself
-    const L = 3.6
+    const L = story ? 6 : 3.6
     const wide = !!(el.querySelector('.letter') as HTMLElement | null)?.dataset.wide
     tl.fromTo(q('.letter'), { opacity: 0, y: 70, rotate: -2.5 }, { opacity: 1, y: 0, rotate: 0, duration: 1.2, ease: 'power3.out' }, L)
     if (!wide) tl.to(q('.art-dim'), { opacity: 0.18, filter: 'blur(1.5px)', duration: 1 }, L)
@@ -195,7 +203,17 @@ export function Invitation() {
             <ArchFlowers />
             {!wedding.couplePhoto && <g className="couple" transform="translate(50 238)"><Couple /></g>}
           </Sketch>
-          {wedding.couplePhoto && (
+          {wedding.coupleWalk && wedding.coupleFacing && (
+            <div className="art-dim" style={{ ...at(200, 250, 250), aspectRatio: '3 / 4.6' }}>
+              <div className="c-walk absolute inset-0 origin-bottom">
+                <img src={wedding.coupleWalk} alt="" className="c-walk-bob absolute bottom-0 left-0 block h-auto w-full select-none" draggable={false} />
+              </div>
+              <div className="c-face absolute inset-0 origin-bottom opacity-0">
+                <img src={wedding.coupleFacing} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="absolute bottom-0 left-0 block h-auto w-full select-none" draggable={false} />
+              </div>
+            </div>
+          )}
+          {wedding.couplePhoto && !(wedding.coupleWalk && wedding.coupleFacing) && (
             <div className="couple-photo art-dim" style={at(200, 268, 240)}>
               <img src={wedding.couplePhoto} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="block h-auto w-full select-none" draggable={false} />
               <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(107,122,140,0.18)] blur-[6px]" />
@@ -204,7 +222,7 @@ export function Invitation() {
           <div style={at(200, 34, 370)} className="art-dim text-center">
             <p className="i-in eyebrow !text-[clamp(0.55rem,2.6cqw,0.72rem)]">You are invited</p>
             <p className="i-in mt-1 font-[family-name:var(--font-script)] text-[clamp(1.8rem,9cqw,2.7rem)] leading-tight text-[var(--color-ink)]">
-              join us in our happiness
+              Join us in our happiness
             </p>
             <p className="i-in hand mt-1 text-[clamp(1rem,4.8cqw,1.35rem)] leading-snug text-[var(--color-mauve-deep)]">
               {wedding.shortNames.bride} &amp; {wedding.shortNames.groom}

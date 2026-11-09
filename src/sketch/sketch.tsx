@@ -92,7 +92,7 @@ export function SketchLink({
 }
 
 /** The main call-to-action: a filled, softly pulsing pill with a pencil outline and a hand-written hint. */
-export function DirectionsButton({ href, delay = 0, hint = 'tap to open the map' }: { href: string; delay?: number; hint?: string }) {
+export function DirectionsButton({ href, delay = 0, hint = 'Tap to open the map' }: { href: string; delay?: number; hint?: string }) {
   return (
     <motion.div
       className="flex flex-col items-center"

@@ -9,7 +9,7 @@ import { PetalsCanvas } from './components/garden/PetalsCanvas'
 import { MusicToggle } from './components/ui/MusicToggle'
 import { prefersReducedMotion } from './lib/motion'
 import { Trailer, type TrailerScene } from './story/Trailer'
-import { SceneMode } from './story/scene'
+import { SceneMode, StartStory } from './story/scene'
 import { Landing } from './scenes/Landing'
 import { Names } from './scenes/Names'
 import { DateBoard } from './scenes/DateBoard'
@@ -45,7 +45,8 @@ function useMusic(src: string | null) {
     if (!a) return
     if (playing) { setPlaying(false); fadeTo(0) } else a.play().then(() => { setPlaying(true); fadeTo(0.55) }).catch(() => {})
   }
-  return { available, playing, toggle }
+  const play = () => { if (!playing) toggle() }
+  return { available, playing, toggle, play }
 }
 
 /** Trailer timing (seconds). */
@@ -55,12 +56,13 @@ const SCENES: TrailerScene[] = [
   { id: 'date', C: DateBoard, duration: 8.6 },
   { id: 'time', C: TimeScene, duration: 6.2 },
   { id: 'venue', C: Venue, duration: 6.2 },
-  { id: 'invite', C: Invitation, duration: 12 },
+  { id: 'invite', C: Invitation, duration: wedding.coupleWalk && wedding.coupleFacing ? 14.5 : 12 },
 ]
 
 export default function App() {
-  // ?skip jumps straight to the scroll page; reduced-motion users skip the trailer too
-  const [free, setFree] = useState(() => new URLSearchParams(location.search).has('skip') || prefersReducedMotion())
+  // the site opens as a normal scrolling page; the story (auto-playing trailer) starts from the hero.
+  // ?story opens straight into the story.
+  const [free, setFree] = useState(() => !new URLSearchParams(location.search).has('story') || prefersReducedMotion())
   const [sceneIdx, setSceneIdx] = useState(0)
   const music = useMusic(wedding.music)
 
@@ -86,6 +88,12 @@ export default function App() {
   }, [free])
 
   const finish = useCallback(() => setFree(true), [])
+  const startStory = useCallback(() => {
+    setSceneIdx(0)
+    setFree(false)
+    music.play() // the tap counts as permission to play sound
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [music.playing, music.available])
   const showPetals = free || sceneIdx >= 1
 
   return (
@@ -101,6 +109,7 @@ export default function App() {
       </AnimatePresence>
 
       {free && (
+        <StartStory.Provider value={prefersReducedMotion() ? null : startStory}>
         <SceneMode.Provider value="scroll">
           <motion.main
             className="relative overflow-x-clip"
@@ -118,6 +127,7 @@ export default function App() {
             <Invitation />
           </motion.main>
         </SceneMode.Provider>
+        </StartStory.Provider>
       )}
 
       {showPetals && <PetalsCanvas />}

@@ -15,11 +15,7 @@ function Letters({ text }: { text: string }) {
             <span
               key={i}
               className="hero-letter inline-block"
-              // Great Vibes draws its capitals like small letters ("a", "m"), so each word's first letter
-              // is set as a true capital in an elegant italic serif instead
-              style={i === 0
-                ? { fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontWeight: 500, fontSize: '0.92em', lineHeight: 1, padding: '0 0.04em 0 0', marginRight: '-0.1em' }
-                : { padding: '0.08em 0.2em 0.12em', margin: '-0.08em -0.2em -0.12em' }}
+              style={{ padding: '0.08em 0.2em 0.12em', margin: '-0.08em -0.2em -0.12em' }}
             >
               {c}
             </span>
@@ -33,7 +29,7 @@ function Letters({ text }: { text: string }) {
 function PersonBlock({ p, side }: { p: Person; side: 'bride' | 'groom' }) {
   return (
     <div className={`hero-${side} flex flex-col items-center`}>
-      <h1 className="font-[family-name:var(--font-script)] text-[clamp(2.5rem,12.5vw,3.2rem)] leading-[1.1] text-[var(--color-ink)] sm:text-7xl">
+      <h1 className="text-[clamp(2.4rem,11.2vw,3.5rem)] leading-[1.1] text-[var(--color-ink)] sm:text-[5rem]" style={{ fontFamily: "'Ephesis', 'Great Vibes', cursive" }}>
         <Letters text={p.name} />
       </h1>
       <p className="hero-fade mt-2 font-[family-name:var(--font-display)] text-[0.62rem] tracking-[0.3em] text-[var(--color-blue-deep)] uppercase sm:text-xs">

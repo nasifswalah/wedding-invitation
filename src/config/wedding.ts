@@ -61,9 +61,9 @@ export const wedding = {
     id: 'nikah',
     title: 'Nikah',
     arabicTitle: 'عقد النكاح',
-    // TODO: time is a placeholder — update when confirmed (date: Wednesday 9 December 2026)
-    start: '2026-12-09T11:00:00+05:30',
-    end: '2026-12-09T13:00:00+05:30',
+    // Wednesday 9 December 2026, 10:30 AM (IST)
+    start: '2026-12-09T10:30:00+05:30',
+    end: '2026-12-09T12:30:00+05:30',
     venue: {
       name: 'City Plaza Auditorium',
       address: 'Tirur, Malappuram, Kerala',

@@ -73,7 +73,7 @@ export const wedding = {
   } as WeddingEvent,
 
   /** Cut-out image of the couple (transparent background) — null uses the hand-drawn version. */
-  couplePhoto: '/images/couple-facing.webp' as string | null,
+  couplePhoto: '/images/couple-walk.webp' as string | null,
 
   /**
    * Two-part couple animation (transparent PNG/WebP, same illustration style):

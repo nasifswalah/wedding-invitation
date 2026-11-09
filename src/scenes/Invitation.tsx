@@ -214,7 +214,7 @@ export function Invitation() {
             </div>
           )}
           {wedding.couplePhoto && !(wedding.coupleWalk && wedding.coupleFacing) && (
-            <div className="couple-photo art-dim" style={at(200, 268, 240)}>
+            <div className="couple-photo art-dim" style={at(200, 290, 240)}>
               <img src={wedding.couplePhoto} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="block h-auto w-full select-none" draggable={false} />
               <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(107,122,140,0.18)] blur-[6px]" />
             </div>

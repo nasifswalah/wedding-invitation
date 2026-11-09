@@ -15,8 +15,11 @@ function Letters({ text }: { text: string }) {
             <span
               key={i}
               className="hero-letter inline-block"
-              // the script font's capitals are small and loopy — enlarge each word's first letter so it reads as a capital
-              style={{ padding: '0.08em 0.2em 0.12em', margin: '-0.08em -0.2em -0.12em', fontSize: i === 0 ? '1.3em' : undefined, lineHeight: i === 0 ? 0.9 : undefined }}
+              // Great Vibes draws its capitals like small letters ("a", "m"), so each word's first letter
+              // is set as a true capital in an elegant italic serif instead
+              style={i === 0
+                ? { fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic', fontWeight: 500, fontSize: '0.92em', lineHeight: 1, padding: '0 0.04em 0 0', marginRight: '-0.1em' }
+                : { padding: '0.08em 0.2em 0.12em', margin: '-0.08em -0.2em -0.12em' }}
             >
               {c}
             </span>

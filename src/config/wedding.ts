@@ -81,8 +81,8 @@ export const wedding = {
    *  facing — the two of them turned towards each other
    * When both are set they replace `couplePhoto` in the invitation scene.
    */
-  coupleWalk: null as string | null,
-  coupleFacing: null as string | null,
+  coupleWalk: '/images/couple-walk.webp' as string | null,
+  coupleFacing: '/images/couple-facing.webp' as string | null,
 
   /**
    * The Hijri date is calculated automatically (Umm al-Qura).

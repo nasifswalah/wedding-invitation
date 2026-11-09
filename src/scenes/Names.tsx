@@ -1,6 +1,6 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 import gsap from 'gsap'
-import { StartStory, useSceneTimeline } from '../story/scene'
+import { useSceneTimeline } from '../story/scene'
 import { GardenScene } from '../components/garden/GardenScene'
 import { wedding, type Person } from '../config/wedding'
 import { gregorianParts } from '../lib/dates'
@@ -43,7 +43,6 @@ function PersonBlock({ p, side }: { p: Person; side: 'bride' | 'groom' }) {
 export function Names() {
   const root = useRef<HTMLElement>(null)
   const g = gregorianParts(wedding.event.start)
-  const startStory = useContext(StartStory)
 
   const mode = useSceneTimeline(root, (tl, q, el) => {
     tl.fromTo(q('.garden-rise'), { yPercent: 10, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 2.6, ease: 'power2.out' }, 0)
@@ -54,7 +53,7 @@ export function Names() {
       .from(q('.hero-bride .hero-letter'), { opacity: 0, y: 26, rotate: 8, filter: 'blur(6px)', duration: 1.1, stagger: 0.06 }, '-=0.7')
       .from(q('.hero-bride .hero-fade'), { opacity: 0, y: 12, duration: 0.9, stagger: 0.12 }, '-=0.6')
       .from(q('.hero-date'), { opacity: 0, y: 12, duration: 1 }, '-=0.4')
-      .from(q('.scroll-wrap, .story-btn'), { opacity: 0, y: 8, duration: 1 }, '-=0.3')
+      .from(q('.scroll-wrap'), { opacity: 0, duration: 1 }, '-=0.3')
     void el
   })
 
@@ -102,17 +101,6 @@ export function Names() {
           <span>{g.year}</span>
         </div>
 
-        {mode === 'scroll' && startStory && (
-          <button
-            onClick={startStory}
-            className="story-btn group mt-7 inline-flex min-h-[46px] items-center gap-2.5 rounded-full border border-[rgba(156,100,115,0.45)] bg-[rgba(253,250,244,0.85)] px-5 font-[family-name:var(--font-display)] text-[0.7rem] tracking-[0.22em] text-[var(--color-mauve-deep)] uppercase backdrop-blur transition-transform active:scale-95"
-          >
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-[var(--color-mauve)] text-[#fffaf5] transition-transform group-hover:scale-110">
-              <svg width="9" height="10" viewBox="0 0 9 10" aria-hidden><path d="M1 1 L8 5 L1 9Z" fill="currentColor" /></svg>
-            </span>
-            Watch our story
-          </button>
-        )}
       </div>
 
       {mode === 'scroll' && (

@@ -153,7 +153,7 @@ export function Invitation() {
     tl.from(q('.i-in'), { opacity: 0, y: 10, filter: 'blur(4px)', duration: 0.9, stagger: 0.2 }, 1.2)
 
     // after a short pause, the letter rises and reads itself
-    const L = story ? 6 : 3.6
+    const L = story ? 7.2 : 3.6
     const wide = !!(el.querySelector('.letter') as HTMLElement | null)?.dataset.wide
     tl.fromTo(q('.letter'), { opacity: 0, y: 70, rotate: -2.5 }, { opacity: 1, y: 0, rotate: 0, duration: 1.2, ease: 'power3.out' }, L)
     if (!wide) tl.to(q('.art-dim'), { opacity: 0.18, filter: 'blur(1.5px)', duration: 1 }, L)
@@ -204,7 +204,7 @@ export function Invitation() {
             {!wedding.couplePhoto && <g className="couple" transform="translate(50 238)"><Couple /></g>}
           </Sketch>
           {wedding.coupleWalk && wedding.coupleFacing && (
-            <div className="art-dim" style={{ ...at(200, 250, 250), aspectRatio: '3 / 4.6' }}>
+            <div className="art-dim" style={{ ...at(200, 275, 250), aspectRatio: '921 / 1344' }}>
               <div className="c-walk absolute inset-0 origin-bottom">
                 <img src={wedding.coupleWalk} alt="" className="c-walk-bob absolute bottom-0 left-0 block h-auto w-full select-none" draggable={false} />
               </div>

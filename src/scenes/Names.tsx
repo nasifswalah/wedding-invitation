@@ -12,7 +12,12 @@ function Letters({ text }: { text: string }) {
         <span key={w} className="inline-block whitespace-nowrap" aria-hidden>
           {w > 0 && <span className="inline-block w-[0.25em]" />}
           {Array.from(word).map((c, i) => (
-            <span key={i} className="hero-letter inline-block" style={{ padding: '0.08em 0.2em 0.12em', margin: '-0.08em -0.2em -0.12em' }}>
+            <span
+              key={i}
+              className="hero-letter inline-block"
+              // the script font's capitals are small and loopy — enlarge each word's first letter so it reads as a capital
+              style={{ padding: '0.08em 0.2em 0.12em', margin: '-0.08em -0.2em -0.12em', fontSize: i === 0 ? '1.3em' : undefined, lineHeight: i === 0 ? 0.9 : undefined }}
+            >
               {c}
             </span>
           ))}

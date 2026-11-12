@@ -1,5 +1,6 @@
-import { useRef } from 'react'
-import { useSceneTimeline } from '../story/scene'
+import { useRef, useState } from 'react'
+import gsap from 'gsap'
+import { useSceneTimeline, useStoryCtl } from '../story/scene'
 import { drawSketch } from '../sketch/sketch'
 
 const BISMILLAH = 'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ'
@@ -8,6 +9,20 @@ const DUA = ['بَارَكَ ٱللَّٰهُ لَكُمَا', 'وَبَارَك
 /** Opening: the Bismillah writes itself right→left, then the marriage du'a. Small and quiet. */
 export function Landing() {
   const root = useRef<HTMLElement>(null)
+  const ctl = useStoryCtl()
+  const [opened, setOpened] = useState(false)
+
+  // the story waits here for the guest: their tap starts the music (browsers only allow sound
+  // after a tap) and moves on to the invitation
+  const openInvitation = () => {
+    if (opened || !ctl) return
+    setOpened(true)
+    ctl.onGuestTap()
+    const q = gsap.utils.selector(root.current)
+    gsap.fromTo(q('.open-ripple'), { scale: 0.9, opacity: 0.8 }, { scale: 1.6, opacity: 0, duration: 1, ease: 'power2.out' })
+    gsap.to(q('.open-btn'), { scale: 0.96, duration: 0.15, yoyo: true, repeat: 1 })
+    gsap.delayedCall(0.6, ctl.next)
+  }
 
   useSceneTimeline(root, (tl, q, el) => {
     tl.set(q('.basmala-text'), { strokeDasharray: 700, strokeDashoffset: 700, fillOpacity: 0 })
@@ -21,6 +36,7 @@ export function Landing() {
     drawSketch(tl, el.querySelector('.flourish'), { at: 3.6, duration: 1.2 })
     tl.fromTo(q('.dua-line'), { opacity: 0, y: 10, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, stagger: 0.6 }, 4.2)
       .fromTo(q('.dua-en'), { opacity: 0 }, { opacity: 1, duration: 0.9, stagger: 0.2 }, 6.1)
+      .fromTo(q('.open-wrap'), { opacity: 0, y: 8, pointerEvents: 'none' }, { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.9 }, 7.4)
   })
 
   return (
@@ -69,6 +85,19 @@ export function Landing() {
         <p className="dua-en mt-2 max-w-[18rem] text-[0.86rem] italic leading-snug text-[var(--color-ink)] opacity-0">
           May Allah bless you both, shower His blessings upon you, and unite you in goodness.
         </p>
+
+        {ctl && (
+          <div className="open-wrap relative mt-8 opacity-0">
+            <span className="open-ripple pointer-events-none absolute inset-0 rounded-full border border-[var(--color-champagne)] opacity-0" aria-hidden />
+            <button
+              onClick={openInvitation}
+              className={`open-btn relative inline-flex h-10 items-center gap-2 rounded-full px-5 font-[family-name:var(--font-display)] text-[0.66rem] tracking-[0.26em] text-[var(--color-champagne)] uppercase ${opened ? '' : 'open-glow'}`}
+            >
+              Open the invitation
+              <svg width="7" height="10" viewBox="0 0 7 10" aria-hidden><path d="M1.5 1 L5.5 5 L1.5 9" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   )

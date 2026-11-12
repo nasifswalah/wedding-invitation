@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState, type ComponentType } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import gsap from 'gsap'
-import { SceneMode } from './scene'
+import { SceneMode, StoryCtl, type StoryControls } from './scene'
 
-export type TrailerScene = { id: string; C: ComponentType; duration: number; exit?: 'gust' | 'fade' }
+/** `waitForGuest`: the scene does not move on by itself; it calls `next()` when the guest taps its button. */
+export type TrailerScene = { id: string; C: ComponentType; duration: number; waitForGuest?: boolean; exit?: 'gust' | 'fade' }
 
 const exits = {
   // the names scene is carried away on the gust of wind
@@ -17,18 +18,27 @@ const exits = {
  * Pause freezes GSAP's global timeline, which holds every scene animation
  * and the timer that advances the scenes.
  */
-export function Trailer({ scenes, onDone, onSceneChange }: { scenes: TrailerScene[]; onDone: () => void; onSceneChange?: (i: number) => void }) {
+export function Trailer({ scenes, onDone, onSceneChange, onGuestTap, controls }: {
+  scenes: TrailerScene[]; onDone: () => void; onSceneChange?: (i: number) => void; onGuestTap?: () => void; controls?: ReactNode
+}) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const bars = useRef<(HTMLSpanElement | null)[]>([])
+
+  const next = useCallback(() => {
+    if (index + 1 < scenes.length) setIndex(index + 1)
+    else onDone()
+  }, [index, scenes.length, onDone])
 
   useEffect(() => {
     onSceneChange?.(index)
     const s = scenes[index]
     const fill = gsap.fromTo(bars.current[index], { scaleX: 0 }, { scaleX: 1, duration: s.duration, ease: 'none' })
-    const next = gsap.delayedCall(s.duration, () => (index + 1 < scenes.length ? setIndex(index + 1) : onDone()))
-    return () => { fill.kill(); next.kill() }
-  }, [index, scenes, onDone, onSceneChange])
+    const timer = s.waitForGuest ? null : gsap.delayedCall(s.duration, next)
+    return () => { fill.kill(); timer?.kill() }
+  }, [index, scenes, next, onSceneChange])
+
+  const ctl = useMemo<StoryControls>(() => ({ next, onGuestTap: () => onGuestTap?.() }), [next, onGuestTap])
 
   useEffect(() => {
     if (paused) gsap.globalTimeline.pause()
@@ -49,7 +59,7 @@ export function Trailer({ scenes, onDone, onSceneChange }: { scenes: TrailerScen
             animate={{ opacity: 1, transition: { duration: 1, delay: 0.3 } }}
             exit={exits[S.exit ?? 'fade']}
           >
-            <S.C />
+            <StoryCtl.Provider value={ctl}><S.C /></StoryCtl.Provider>
           </motion.div>
         </AnimatePresence>
       </SceneMode.Provider>
@@ -68,10 +78,11 @@ export function Trailer({ scenes, onDone, onSceneChange }: { scenes: TrailerScen
           ))}
         </div>
       </div>
-      <div className="fixed right-2 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-1">
+      <div className="fixed right-2 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2">
+        {controls}
         <button
           onClick={() => setPaused((p) => !p)}
-          className="grid h-11 w-11 place-items-center rounded-full text-[var(--color-pencil)]"
+          className="ctrl-btn grid h-10 w-10 place-items-center"
           aria-label={paused ? 'Play' : 'Pause'}
         >
           {paused ? (

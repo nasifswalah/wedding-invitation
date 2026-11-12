@@ -18,40 +18,105 @@ import { Venue } from './scenes/Venue'
 import { Invitation } from './scenes/Invitation'
 import { GrowingVine } from './scenes/GrowingVine'
 
-function useMusic(src: string | null) {
+const MUSIC_VOLUME = 0.55
+
+/**
+ * Background song. Browsers block sound until the guest interacts, so it tries to start straight away
+ * and otherwise starts on the first tap / key press. Once the guest mutes it, it stays muted.
+ * It pauses while the tab is hidden.
+ */
+function useMusic(src: string | null, startAt = 0) {
   const audio = useRef<HTMLAudioElement | null>(null)
-  const [available, setAvailable] = useState(false)
+  const playingRef = useRef(false)
+  const mutedByGuest = useRef(false)
+  const [available, setAvailable] = useState(!!src)
   const [playing, setPlaying] = useState(false)
+
+  const fadeTo = useCallback((v: number) => {
+    const a = audio.current
+    if (!a) return
+    gsap.killTweensOf(a)
+    gsap.to(a, { volume: v, duration: 1.6, ease: 'sine.inOut', onComplete: () => { if (v === 0) a.pause() } })
+  }, [])
+
+  const start = useCallback(() => {
+    const a = audio.current
+    if (!a || playingRef.current) return Promise.resolve()
+    return a.play().then(() => { playingRef.current = true; setPlaying(true); fadeTo(MUSIC_VOLUME) })
+  }, [fadeTo])
+
+  const stop = useCallback(() => {
+    if (!playingRef.current) return
+    playingRef.current = false
+    setPlaying(false)
+    fadeTo(0)
+  }, [fadeTo])
 
   useEffect(() => {
     if (!src) return
     const a = new Audio(src)
-    a.loop = true
     a.preload = 'auto'
     a.volume = 0
-    a.addEventListener('canplaythrough', () => setAvailable(true), { once: true })
-    a.addEventListener('error', () => setAvailable(false))
+    // the song starts at `startAt` and loops back there instead of to 0:00
+    const toStart = () => { if (a.currentTime < startAt) a.currentTime = startAt }
+    const onEnded = () => { a.currentTime = startAt; a.play().catch(() => {}) }
+    const onError = () => setAvailable(false)
+    a.addEventListener('loadedmetadata', toStart)
+    a.addEventListener('play', toStart)
+    a.addEventListener('ended', onEnded)
+    a.addEventListener('error', onError)
+    setAvailable(true)
     audio.current = a
-    return () => a.pause()
-  }, [src])
 
-  const fadeTo = (v: number) => {
-    const a = audio.current
-    if (!a) return
-    gsap.to(a, { volume: v, duration: 1.6, ease: 'sine.inOut', onComplete: () => { if (v === 0) a.pause() } })
-  }
-  const toggle = () => {
-    const a = audio.current
-    if (!a) return
-    if (playing) { setPlaying(false); fadeTo(0) } else a.play().then(() => { setPlaying(true); fadeTo(0.55) }).catch(() => {})
-  }
-  const play = () => { if (!playing) toggle() }
+    // only these events count as a "user activation" that unlocks sound on phones
+    // (pointerdown does NOT on touch screens), and we keep listening until a play actually succeeds
+    const events = ['click', 'touchend', 'pointerup', 'keydown'] as const
+    const stopListening = () => events.forEach((e) => window.removeEventListener(e, onFirstGesture))
+    const onFirstGesture = (e: Event) => {
+      // a tap on the music button itself is handled by its own toggle
+      if ((e.target as Element | null)?.closest?.('[data-music-toggle]')) { stopListening(); return }
+      if (mutedByGuest.current) { stopListening(); return }
+      start()?.then(stopListening).catch(() => {})
+    }
+    start()?.catch(() => events.forEach((e) => window.addEventListener(e, onFirstGesture, { passive: true })))
+
+    let resumeOnShow = false
+    const onVisibility = () => {
+      if (document.hidden) { resumeOnShow = playingRef.current; if (resumeOnShow) { gsap.killTweensOf(a); a.pause() } }
+      else if (resumeOnShow) a.play().catch(() => {})
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+
+    return () => {
+      stopListening()
+      document.removeEventListener('visibilitychange', onVisibility)
+      // detach the listeners first: clearing the source fires an 'error' event, which used to hide the button
+      a.removeEventListener('loadedmetadata', toStart)
+      a.removeEventListener('play', toStart)
+      a.removeEventListener('ended', onEnded)
+      a.removeEventListener('error', onError)
+      gsap.killTweensOf(a)
+      a.pause()
+      a.removeAttribute('src')
+      a.load()
+      if (audio.current === a) audio.current = null
+      playingRef.current = false
+      setPlaying(false)
+    }
+  }, [src, startAt, start])
+
+  const toggle = useCallback(() => {
+    if (playingRef.current) { mutedByGuest.current = true; stop() }
+    else { mutedByGuest.current = false; start()?.catch(() => {}) }
+  }, [start, stop])
+  const play = useCallback(() => { if (!mutedByGuest.current) start()?.catch(() => {}) }, [start])
   return { available, playing, toggle, play }
 }
 
 /** Trailer timing (seconds). */
 const SCENES: TrailerScene[] = [
-  { id: 'landing', C: Landing, duration: 8.5 },
+  // after the du'a the story waits for the guest to tap "Open the invitation" (that tap also starts the music)
+  { id: 'landing', C: Landing, duration: 8.5, waitForGuest: true },
   { id: 'names', C: Names, duration: 8.5 },
   { id: 'date', C: DateBoard, duration: 8.6 },
   { id: 'time', C: TimeScene, duration: 6.2 },
@@ -64,7 +129,7 @@ export default function App() {
   // ?skip jumps straight to the page; reduced-motion users skip the story too.
   const [free, setFree] = useState(() => new URLSearchParams(location.search).has('skip') || prefersReducedMotion())
   const [sceneIdx, setSceneIdx] = useState(0)
-  const music = useMusic(wedding.music)
+  const music = useMusic(wedding.music, wedding.musicStart)
 
   // smooth scrolling, synced with GSAP's ticker so ScrollTrigger stays frame-perfect
   useEffect(() => {
@@ -92,9 +157,9 @@ export default function App() {
     setSceneIdx(0)
     setFree(false)
     music.play() // the tap counts as permission to play sound
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [music.playing, music.available])
+  }, [music.play])
   const showPetals = free || sceneIdx >= 1
+  const musicButton = <MusicToggle playing={music.playing} available={music.available} onToggle={music.toggle} />
 
   return (
     <>
@@ -103,7 +168,7 @@ export default function App() {
       <AnimatePresence>
         {!free && (
           <motion.div key="trailer" exit={{ opacity: 0, transition: { duration: 1 } }}>
-            <Trailer scenes={SCENES} onDone={finish} onSceneChange={setSceneIdx} />
+            <Trailer scenes={SCENES} onDone={finish} onSceneChange={setSceneIdx} onGuestTap={music.play} controls={musicButton} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -128,21 +193,27 @@ export default function App() {
         </SceneMode.Provider>
       )}
 
-      {free && !prefersReducedMotion() && (
-        <motion.button
-          onClick={startStory}
+      {free && (
+        <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { delay: 2.5, duration: 1 } }}
-          aria-label="Watch our story"
-          title="Watch our story"
-          className="fixed right-2 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 inline-flex h-11 w-11 items-center justify-center text-[var(--color-pencil)]"
+          animate={{ opacity: 1, transition: { delay: 1.2, duration: 1 } }}
+          className="fixed right-2 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2"
         >
-          <svg width="12" height="13" viewBox="0 0 10 11" aria-hidden><path d="M1.5 1 L9 5.5 L1.5 10Z" fill="currentColor" /></svg>
-        </motion.button>
+          {musicButton}
+          {!prefersReducedMotion() && (
+            <button
+              onClick={startStory}
+              aria-label="Watch our story"
+              title="Watch our story"
+              className="ctrl-btn grid h-10 w-10 place-items-center"
+            >
+              <svg width="12" height="13" viewBox="0 0 10 11" aria-hidden><path d="M1.5 1 L9 5.5 L1.5 10Z" fill="currentColor" /></svg>
+            </button>
+          )}
+        </motion.div>
       )}
 
       {showPetals && <PetalsCanvas />}
-      <MusicToggle playing={music.playing} available={music.available} onToggle={music.toggle} />
     </>
   )
 }

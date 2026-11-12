@@ -182,3 +182,28 @@ body.locked {
 @media (prefers-reduced-motion: reduce) {
   .ray, .bf-wing-l, .bf-wing-r, .bf-bob, .lantern-glow, .scroll-cue { animation: none; }
 }
+
+/* round control buttons (music, play / pause): a soft champagne light so they stand out on the dark page */
+.ctrl-btn {
+  border-radius: 9999px;
+  background: radial-gradient(circle at 50% 40%, rgba(233, 201, 166, 0.22), rgba(233, 201, 166, 0.08) 70%);
+  box-shadow: 0 0 14px rgba(233, 201, 166, 0.22), inset 0 0 0 1px rgba(233, 201, 166, 0.22);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: var(--color-champagne);
+  transition: transform 0.15s, box-shadow 0.3s;
+}
+.ctrl-btn:active { transform: scale(0.93); }
+@media (hover: hover) { .ctrl-btn:hover { box-shadow: 0 0 20px rgba(233, 201, 166, 0.35), inset 0 0 0 1px rgba(233, 201, 166, 0.35); } }
+
+/* "Open the invitation": the story waits here, so a soft blinking glow shows the guest where to tap */
+.open-glow {
+  background: rgba(233, 201, 166, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(233, 201, 166, 0.45);
+  animation: open-glow 1.8s ease-in-out infinite;
+}
+@keyframes open-glow {
+  0%, 100% { box-shadow: inset 0 0 0 1px rgba(233, 201, 166, 0.35), 0 0 6px rgba(233, 201, 166, 0.15); }
+  50% { box-shadow: inset 0 0 0 1px rgba(233, 201, 166, 0.8), 0 0 22px rgba(233, 201, 166, 0.45); }
+}
+@media (prefers-reduced-motion: reduce) { .open-glow { animation: none; } }

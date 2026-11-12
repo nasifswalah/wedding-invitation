@@ -10,6 +10,15 @@ export const SceneMode = createContext<SceneMode>('scroll')
 export const useSceneMode = () => useContext(SceneMode)
 
 /**
+ * Story controls a trailer scene can use: `next()` moves on to the next scene,
+ * `onGuestTap()` is called when the guest answers a prompt (e.g. "Ameen"), which unlocks the music.
+ * null outside the trailer.
+ */
+export type StoryControls = { next: () => void; onGuestTap: () => void }
+export const StoryCtl = createContext<StoryControls | null>(null)
+export const useStoryCtl = () => useContext(StoryCtl)
+
+/**
  * Each scene builds ONE GSAP timeline. In the trailer it plays straight away;
  * on the scroll page it plays when the scene scrolls into view.
  * Reduced-motion users get the finished drawing immediately.

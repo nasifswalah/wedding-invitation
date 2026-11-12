@@ -110,7 +110,9 @@ export const wedding = {
   },
 
   /** Put the audio file in /public/audio. Set to null to hide the music button. */
-  music: '/audio/nasheed.mp3' as string | null,
+  music: '/audio/mera-chaand.mp3' as string | null,
+  /** Where the song starts (seconds); it also loops back to here. */
+  musicStart: 18,
 
   /** Message sent by the "Share on WhatsApp" button; the invitation link is added after it. */
   shareText: "We're getting married! 💍 With the blessings of Allah, Shamil & Athika joyfully invite you to celebrate our Nikah. Open our invitation for all the details 💌",

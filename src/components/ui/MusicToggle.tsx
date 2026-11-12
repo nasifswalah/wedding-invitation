@@ -1,28 +1,26 @@
-import { motion } from 'framer-motion'
-
-/** Small sketched music button — browsers only allow sound after the guest taps. */
+/** Mute / unmute button for the background song. Sits in the bottom-right control group next to play / pause. */
 export function MusicToggle({ playing, available, onToggle }: { playing: boolean; available: boolean; onToggle: () => void }) {
   if (!available) return null
   return (
-    <motion.button
+    <button
       onClick={onToggle}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.2 }}
-      className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 z-50 grid h-11 w-11 place-items-center rounded-full text-[var(--color-mauve-deep)]"
-      aria-label={playing ? 'Pause music' : 'Play music'}
+      data-music-toggle
+      className="ctrl-btn grid h-10 w-10 place-items-center"
+      aria-label={playing ? 'Mute music' : 'Play music'}
+      title={playing ? 'Mute music' : 'Play music'}
       aria-pressed={playing}
     >
-      <span className="flex h-4 items-end gap-[3px]">
-        {[0, 1, 2, 3].map((i) => (
-          <motion.span
-            key={i}
-            className="w-[2px] rounded-full bg-current"
-            animate={playing ? { height: ['30%', '100%', '45%', '80%', '30%'] } : { height: '30%' }}
-            transition={playing ? { duration: 1.1 + i * 0.15, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
-          />
-        ))}
-      </span>
-    </motion.button>
+      <svg width="17" height="15" viewBox="0 0 17 15" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M1.5 5.2 h2.8 L8 2 v11 L4.3 9.8 H1.5z" fill="currentColor" />
+        {playing ? (
+          <>
+            <path d="M10.6 5 q1.6 2.5 0 5" />
+            <path d="M12.8 3 q3 4.5 0 9" />
+          </>
+        ) : (
+          <path d="M11 5 l4.5 5 M15.5 5 L11 10" />
+        )}
+      </svg>
+    </button>
   )
 }

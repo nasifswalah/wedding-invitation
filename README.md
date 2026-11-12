@@ -15,7 +15,7 @@ npm run build      # static site in dist/ — deploy to Vercel / Netlify / any s
 All the text lives in **`src/config/wedding.ts`**: names, parents, family houses, event dates and times (IST), venues, directions, Google Maps links, the invitation message and the share text.
 
 - **Hijri date**: calculated automatically (Umm al-Qura). To use the family's local moon-sighting date instead, set `hijriOverride`.
-- **Music**: put an audio file at `public/audio/nasheed.mp3`. The music button only appears when the file loads. Set `music: null` to turn music off.
+- **Music**: the song is `public/audio/mera-chaand.mp3`. It starts on the first tap (browsers block sound before that); the button bottom-left mutes it. Set `music: null` to turn music off.
 - **Maps link**: in Google Maps, open the venue → Share → copy the link → paste it into `mapsUrl`.
 
 ## Where things are

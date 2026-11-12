@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useSceneTimeline, useSceneMode } from '../story/scene'
-import { drawSketch, SketchLink } from '../sketch/sketch'
+import { drawSketch, SketchIconLink } from '../sketch/sketch'
 import { Hydrangea, RoseHead, Eucalyptus } from '../components/garden/botanical'
 import { setAttractor } from '../components/garden/wind'
 import { wedding } from '../config/wedding'
@@ -116,9 +116,18 @@ function Letter() {
         <p className="l-in text-[0.88rem] italic text-[var(--color-pencil)]">{inv.quoteEn}</p>
         <p className="l-in mt-0.5 font-[family-name:var(--font-display)] text-[0.55rem] tracking-[0.28em] text-[var(--color-blue-deep)] uppercase">{inv.quoteRef}</p>
         <p className="l-in mt-3 font-[family-name:var(--font-script)] text-[1.55rem] leading-tight text-[var(--color-ink)]">{inv.signature}</p>
-        <div className="l-in mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1">
-          <SketchLink href={whatsappShareUrl()} external delay={0.2}>Share on WhatsApp</SketchLink>
-          <SketchLink href={googleCalendarUrl(wedding.event)} external color="#cbb59c" delay={0.4}>Save to calendar</SketchLink>
+        <div className="l-in mt-4 flex items-center justify-center gap-5">
+          <SketchIconLink icon="share" label="Share on WhatsApp" href={whatsappShareUrl()} external delay={0.2} />
+          <SketchIconLink icon="calendar" label="Save to calendar" href={googleCalendarUrl(wedding.event)} external color="#cbb59c" delay={0.4} />
+          {wedding.invitationCard && (
+            <SketchIconLink
+              icon="download"
+              label="Download invitation"
+              href={wedding.invitationCard}
+              download={`${wedding.shortNames.groom}-${wedding.shortNames.bride}-Invitation.jpeg`}
+              delay={0.6}
+            />
+          )}
         </div>
       </div>
     </div>

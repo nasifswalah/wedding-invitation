@@ -76,6 +76,8 @@ export const wedding = {
 
   /** Cut-out image of the couple (transparent background) — null uses the hand-drawn version. */
   couplePhoto: '/images/couple-walk.webp' as string | null,
+  /** The printed invitation card, offered as a download in the last scene (null hides the button). */
+  invitationCard: '/images/invitation.jpeg' as string | null,
 
   /**
    * Two-part couple animation (transparent PNG/WebP, same illustration style):

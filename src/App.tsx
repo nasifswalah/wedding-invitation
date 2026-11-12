@@ -133,10 +133,11 @@ export default function App() {
           onClick={startStory}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { delay: 2.5, duration: 1 } }}
-          className="fixed right-2 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 inline-flex h-11 items-center gap-2 px-3 font-[family-name:var(--font-display)] text-[0.62rem] tracking-[0.3em] text-[var(--color-pencil)] uppercase"
+          aria-label="Watch our story"
+          title="Watch our story"
+          className="fixed right-2 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 inline-flex h-11 w-11 items-center justify-center text-[var(--color-pencil)]"
         >
-          <svg width="10" height="11" viewBox="0 0 10 11" aria-hidden><path d="M1.5 1 L9 5.5 L1.5 10Z" fill="currentColor" /></svg>
-          Watch our story
+          <svg width="12" height="13" viewBox="0 0 10 11" aria-hidden><path d="M1.5 1 L9 5.5 L1.5 10Z" fill="currentColor" /></svg>
         </motion.button>
       )}
 

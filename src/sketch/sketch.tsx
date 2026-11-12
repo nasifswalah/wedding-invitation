@@ -66,8 +66,8 @@ export function roughLine(x1: number, y: number, x2: number, seed = 1) {
 
 /** Link/button with no border or shadow — a pencil ellipse draws itself around it. */
 export function SketchLink({
-  children, href, onClick, color = '#e6b59c', delay = 0, external,
-}: { children: ReactNode; href?: string; onClick?: () => void; color?: string; delay?: number; external?: boolean }) {
+  children, href, onClick, color = '#e6b59c', delay = 0, external, download,
+}: { children: ReactNode; href?: string; onClick?: () => void; color?: string; delay?: number; external?: boolean; download?: string }) {
   const inner = (
     <>
       <svg viewBox="0 0 200 60" preserveAspectRatio="none" className="pointer-events-none absolute -inset-x-3 -inset-y-2 h-[calc(100%+1rem)] w-[calc(100%+1.5rem)] overflow-visible" aria-hidden>
@@ -85,9 +85,54 @@ export function SketchLink({
   )
   const cls = 'relative inline-flex min-h-[46px] items-center justify-center gap-2 px-5 font-[family-name:var(--font-display)] text-[0.74rem] tracking-[0.2em] uppercase text-[var(--color-mauve-deep)] transition-transform active:scale-95'
   return href ? (
-    <a className={cls} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>{inner}</a>
+    <a className={cls} href={href} download={download} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}>{inner}</a>
   ) : (
     <button className={cls} onClick={onClick}>{inner}</button>
+  )
+}
+
+/** Line icons for SketchIconLink, drawn in the same thin pencil stroke. */
+const SKETCH_ICONS = {
+  share: (
+    <path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5zm-3 5c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.8c.1.2 0 .5-.1.6l-.6.7c.6 1.2 1.6 2.2 2.8 2.8l.7-.6c.2-.2.4-.2.6-.1l1.8.8c.3.1.4.3.4.5v.5c0 .3 0 .6-.5.9-.6.4-1.6.6-2.9.1a9.5 9.5 0 0 1-4.6-4.6c-.5-1.3-.3-2.3.1-2.9z" />
+  ),
+  calendar: (
+    <>
+      <rect x="4" y="5.5" width="16" height="14.5" rx="2" />
+      <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M9 14h.01M12 14h.01M15 14h.01M9 17h.01M12 17h.01" />
+    </>
+  ),
+  download: <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" />,
+} as const
+
+/** A round, icon-only sketch button. `label` is what screen readers (and the tooltip) say. */
+export function SketchIconLink({
+  icon, label, href, color = '#e6b59c', delay = 0, external, download,
+}: { icon: keyof typeof SKETCH_ICONS; label: string; href: string; color?: string; delay?: number; external?: boolean; download?: string }) {
+  return (
+    <a
+      href={href}
+      download={download}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      aria-label={label}
+      title={label}
+      className="relative inline-flex size-12 items-center justify-center text-[var(--color-mauve-deep)] transition-transform active:scale-95"
+    >
+      <svg viewBox="0 0 60 60" className="pointer-events-none absolute -inset-1 size-[calc(100%+0.5rem)] overflow-visible" aria-hidden>
+        <motion.path
+          d={roughEllipse(30, 30, 27, 27, label.length)}
+          fill="none" stroke={color} strokeWidth={1.4} strokeLinecap="round" vectorEffect="non-scaling-stroke"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.1, delay, ease: [0.65, 0, 0.35, 1] }}
+        />
+      </svg>
+      <svg viewBox="0 0 24 24" className="relative size-5" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        {SKETCH_ICONS[icon]}
+      </svg>
+    </a>
   )
 }
 

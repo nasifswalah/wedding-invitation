@@ -60,9 +60,9 @@ const SCENES: TrailerScene[] = [
 ]
 
 export default function App() {
-  // the site opens as a normal scrolling page; the story (auto-playing trailer) starts from the hero.
-  // ?story opens straight into the story.
-  const [free, setFree] = useState(() => !new URLSearchParams(location.search).has('story') || prefersReducedMotion())
+  // the site opens with the story (auto-playing trailer), then hands over to the scrolling page.
+  // ?skip jumps straight to the page; reduced-motion users skip the story too.
+  const [free, setFree] = useState(() => new URLSearchParams(location.search).has('skip') || prefersReducedMotion())
   const [sceneIdx, setSceneIdx] = useState(0)
   const music = useMusic(wedding.music)
 

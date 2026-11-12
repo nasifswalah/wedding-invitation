@@ -14,7 +14,7 @@ import { FlowerStand, GroundLantern, GuestTable, Palm, RoundTree, StringLights }
 function ArchSketch() {
   return (
     <g filter="url(#pencil)">
-      <path className="wash" d="M58 640 L58 342 A 142 142 0 0 1 342 342 L342 640Z" fill="#ead2d6" opacity="0.3" filter="url(#wash)" />
+      <path className="wash" d="M58 640 L58 342 A 142 142 0 0 1 342 342 L342 640Z" fill="#8e3344" opacity="0.3" filter="url(#wash)" />
       <path className="sk" d="M10 642 L390 642" />
       <path className="sk" d="M40 642 L40 340 A 160 160 0 0 1 360 340 L360 642" />
       <path className="sk sk-light" d="M58 642 L58 342 A 142 142 0 0 1 342 342 L342 642" />
@@ -85,8 +85,8 @@ function Letter() {
       <div
         className="relative rounded-[6px] px-[8%] pt-9 pb-6 text-center"
         style={{
-          background: 'linear-gradient(180deg, #fffdf8 0%, #faf3e6 100%)',
-          boxShadow: '0 26px 50px -26px rgba(61,75,92,0.55), 0 2px 6px -2px rgba(61,75,92,0.12)',
+          background: 'linear-gradient(180deg, #4f1826 0%, #3f1320 100%)',
+          boxShadow: '0 26px 50px -26px rgba(0,0,0,0.55), 0 2px 6px -2px rgba(0,0,0,0.25)',
         }}
       >
         {/* pencil border, drawn in */}
@@ -95,10 +95,10 @@ function Letter() {
         </svg>
         {/* wax seal */}
         <div
-          className="seal absolute -top-6 left-1/2 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full font-[family-name:var(--font-script)] text-[1.15rem] text-[#fffaf5]"
-          style={{ background: 'radial-gradient(circle at 35% 30%, #d9a3b0, #9c6473 75%)', boxShadow: '0 4px 10px -3px rgba(156,100,115,0.7)' }}
+          className="seal absolute -top-6 left-1/2 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full font-[family-name:var(--font-script)] text-[1.15rem] text-[#3a0f19]"
+          style={{ background: 'radial-gradient(circle at 35% 30%, #f1d6b4, #c9977c 75%)', boxShadow: '0 4px 10px -3px rgba(0,0,0,0.45)' }}
         >
-          {bride[0]}&amp;{groom[0]}
+          {groom[0]}&amp;{bride[0]}
         </div>
 
         <p className="l-in eyebrow !text-[0.6rem]">An invitation</p>
@@ -109,8 +109,8 @@ function Letter() {
           ))}
         </div>
         <svg viewBox="0 0 120 10" className="l-in mx-auto my-3 h-2.5 w-28" aria-hidden>
-          <path d="M2 5 C 30 5 40 1 56 5 M118 5 C 90 5 80 1 64 5" stroke="#c98e9c" strokeWidth="1" fill="none" />
-          <path d="M60 2 L63 5 L60 8 L57 5Z" fill="#a9bfcf" />
+          <path d="M2 5 C 30 5 40 1 56 5 M118 5 C 90 5 80 1 64 5" stroke="#d9a88f" strokeWidth="1" fill="none" />
+          <path d="M60 2 L63 5 L60 8 L57 5Z" fill="#d9a88f" />
         </svg>
         <p className="l-in arabic text-[1.25rem] leading-[1.7] text-[var(--color-mauve-deep)]">{inv.quoteAr}</p>
         <p className="l-in text-[0.88rem] italic text-[var(--color-pencil)]">{inv.quoteEn}</p>
@@ -118,7 +118,7 @@ function Letter() {
         <p className="l-in mt-3 font-[family-name:var(--font-script)] text-[1.55rem] leading-tight text-[var(--color-ink)]">{inv.signature}</p>
         <div className="l-in mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1">
           <SketchLink href={whatsappShareUrl()} external delay={0.2}>Share on WhatsApp</SketchLink>
-          <SketchLink href={googleCalendarUrl(wedding.event)} external color="#6f8aa1" delay={0.4}>Save to calendar</SketchLink>
+          <SketchLink href={googleCalendarUrl(wedding.event)} external color="#cbb59c" delay={0.4}>Save to calendar</SketchLink>
         </div>
       </div>
     </div>
@@ -209,14 +209,14 @@ export function Invitation() {
                 <img src={wedding.coupleWalk} alt="" className="c-walk-bob absolute bottom-0 left-0 block h-auto w-full select-none" draggable={false} />
               </div>
               <div className="c-face absolute inset-0 origin-bottom opacity-0">
-                <img src={wedding.coupleFacing} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="absolute bottom-0 left-0 block h-auto w-full select-none" draggable={false} />
+                <img src={wedding.coupleFacing} alt={`${wedding.shortNames.groom} and ${wedding.shortNames.bride}`} className="absolute bottom-0 left-0 block h-auto w-full select-none" draggable={false} />
               </div>
             </div>
           )}
           {wedding.couplePhoto && !(wedding.coupleWalk && wedding.coupleFacing) && (
             <div className="couple-photo art-dim" style={at(200, 290, 240)}>
-              <img src={wedding.couplePhoto} alt={`${wedding.shortNames.bride} and ${wedding.shortNames.groom}`} className="block h-auto w-full select-none" draggable={false} />
-              <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(107,122,140,0.18)] blur-[6px]" />
+              <img src={wedding.couplePhoto} alt={`${wedding.shortNames.groom} and ${wedding.shortNames.bride}`} className="block h-auto w-full select-none" draggable={false} />
+              <div className="absolute inset-x-[8%] -bottom-[1%] -z-10 h-[4%] rounded-[50%] bg-[rgba(0,0,0,0.35)] blur-[6px]" />
             </div>
           )}
           <div style={at(200, 34, 370)} className="art-dim text-center">
@@ -225,7 +225,7 @@ export function Invitation() {
               Join us in our happiness
             </p>
             <p className="i-in hand mt-1 text-[clamp(1rem,4.8cqw,1.35rem)] leading-snug text-[var(--color-mauve-deep)]">
-              {wedding.shortNames.bride} &amp; {wedding.shortNames.groom}
+              {wedding.shortNames.groom} &amp; {wedding.shortNames.bride}
             </p>
           </div>
           <Letter />

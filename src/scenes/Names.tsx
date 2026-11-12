@@ -79,7 +79,7 @@ export function Names() {
       <div className="hero-content relative z-10 mx-auto flex w-full max-w-xl flex-col items-center px-6 pt-[16svh] pb-[22svh] text-center sm:pt-[18svh]">
         <div
           className="pointer-events-none absolute inset-x-[-10%] inset-y-[8%] -z-10"
-          style={{ background: 'radial-gradient(closest-side, rgba(253,250,244,0.92), rgba(253,250,244,0.6) 55%, rgba(253,250,244,0))' }}
+          style={{ background: 'radial-gradient(closest-side, rgba(42,10,18,0.82), rgba(42,10,18,0.5) 55%, rgba(42,10,18,0))' }}
         />
         <p className="hero-eyebrow eyebrow mb-5">Together with their families</p>
 
@@ -88,9 +88,9 @@ export function Names() {
         <div className="hero-amp my-4 flex items-center gap-3 sm:my-6">
           <span className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--color-mauve)]" />
           <svg viewBox="0 0 60 40" className="h-9 w-14" aria-hidden>
-            <circle cx="23" cy="22" r="11" fill="none" stroke="#6f8aa1" strokeWidth="1.6" />
-            <circle cx="37" cy="22" r="11" fill="none" stroke="#c98e9c" strokeWidth="1.6" />
-            <path d="M37 7 l3 4 l-3 3 l-3 -3z" fill="#ead2d6" stroke="#9c6473" strokeWidth="0.6" />
+            <circle cx="23" cy="22" r="11" fill="none" stroke="#cbb59c" strokeWidth="1.6" />
+            <circle cx="37" cy="22" r="11" fill="none" stroke="#d9a88f" strokeWidth="1.6" />
+            <path d="M37 7 l3 4 l-3 3 l-3 -3z" fill="#8e3344" stroke="#e6b59c" strokeWidth="0.6" />
           </svg>
           <span className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--color-mauve)]" />
         </div>

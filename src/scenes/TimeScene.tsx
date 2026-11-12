@@ -20,8 +20,8 @@ function ClockFace() {
   const numerals = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI']
   return (
     <g filter="url(#pencil)">
-      <circle className="wash" cx={CX} cy={CY} r={R} fill="#fdfaf4" opacity="0.95" />
-      <circle className="wash" cx={CX} cy={CY} r={R - 22} fill="#d3e0ea" opacity="0.35" filter="url(#wash)" />
+      <circle className="wash" cx={CX} cy={CY} r={R} fill="#4a1622" opacity="0.95" />
+      <circle className="wash" cx={CX} cy={CY} r={R - 22} fill="#7a2a38" opacity="0.35" filter="url(#wash)" />
       <circle className="sk sk-ink" cx={CX} cy={CY} r={R} />
       <circle className="sk sk-light" cx={CX} cy={CY} r={R + 6} />
       <circle className="sk sk-light" cx={CX} cy={CY} r={R - 22} />
@@ -31,7 +31,7 @@ function ClockFace() {
         const a = (i / 12) * Math.PI * 2
         return (
           <text key={n} className="clock-num" x={CX + Math.sin(a) * (R - 30)} y={CY - Math.cos(a) * (R - 30) + 4} textAnchor="middle"
-            fontFamily="Cinzel, serif" fontSize={i % 3 === 0 ? 12 : 9} fill="#6b7a8c">{n}</text>
+            fontFamily="Cinzel, serif" fontSize={i % 3 === 0 ? 12 : 9} fill="#cfae8f">{n}</text>
         )
       })}
     </g>
@@ -43,13 +43,13 @@ function Hands() {
   return (
     <g>
       <g className="hand-hour">
-        <path d={`M${CX} ${CY + 10} L${CX - 3.5} ${CY - 20} L${CX} ${CY - 48} L${CX + 3.5} ${CY - 20} Z`} fill="#3d4b5c" />
-        <circle cx={CX} cy={CY - 30} r={3} fill="none" stroke="#fdfaf4" strokeWidth={1} />
+        <path d={`M${CX} ${CY + 10} L${CX - 3.5} ${CY - 20} L${CX} ${CY - 48} L${CX + 3.5} ${CY - 20} Z`} fill="#f3e3cf" />
+        <circle cx={CX} cy={CY - 30} r={3} fill="none" stroke="#4a1622" strokeWidth={1} />
       </g>
       <g className="hand-min">
-        <path d={`M${CX} ${CY + 14} L${CX - 2.4} ${CY - 30} L${CX} ${CY - 72} L${CX + 2.4} ${CY - 30} Z`} fill="#9c6473" />
+        <path d={`M${CX} ${CY + 14} L${CX - 2.4} ${CY - 30} L${CX} ${CY - 72} L${CX + 2.4} ${CY - 30} Z`} fill="#e6b59c" />
       </g>
-      <circle cx={CX} cy={CY} r={5} fill="#c98e9c" stroke="#3d4b5c" strokeWidth={1} />
+      <circle cx={CX} cy={CY} r={5} fill="#d9a88f" stroke="#f3e3cf" strokeWidth={1} />
     </g>
   )
 }

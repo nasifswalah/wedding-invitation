@@ -4,7 +4,7 @@ import { wedding } from '../config/wedding'
 const stamp = (iso: string) => new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
 
 const titleFor = (e: WeddingEvent) =>
-  `${e.title} · ${wedding.shortNames.bride} & ${wedding.shortNames.groom}`
+  `${e.title} · ${wedding.shortNames.groom} & ${wedding.shortNames.bride}`
 
 export function googleCalendarUrl(e: WeddingEvent) {
   const p = new URLSearchParams({

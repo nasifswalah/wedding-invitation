@@ -35,7 +35,7 @@ function EntranceSketch() {
   return (
     <g filter="url(#pencil)">
       {/* lawn wash */}
-      <path className="wash" d="M0 430 L170 420 L230 420 L400 430 L400 700 L0 700Z" fill="#cbd8d0" opacity="0.35" filter="url(#wash)" />
+      <path className="wash" d="M0 430 L170 420 L230 420 L400 430 L400 700 L0 700Z" fill="#5d6440" opacity="0.35" filter="url(#wash)" />
       <path className="sk sk-light" d="M0 430 L170 420 M230 420 L400 430" />
       {/* path */}
       <path className="sk" d="M180 420 L95 700 M220 420 L305 700" />
@@ -47,18 +47,18 @@ function EntranceSketch() {
       <path className="sk" d="M70 446 C 66 380 74 320 92 270 M76 446 C 72 380 80 322 96 272" />
       <path className="sk" d="M94 270 C 70 254 48 262 34 282 M94 270 C 80 244 58 236 42 242 M94 270 C 102 244 122 238 140 246 M94 270 C 114 262 130 272 138 292 M94 270 C 92 250 96 234 104 224" />
       {/* tree, right */}
-      <path className="wash" d="M262 360 C 250 320 280 290 305 300 C 320 270 360 285 355 315 C 375 335 350 370 320 362 C 300 375 270 375 262 360 Z" fill="#cbd8d0" opacity="0.6" filter="url(#wash)" />
+      <path className="wash" d="M262 360 C 250 320 280 290 305 300 C 320 270 360 285 355 315 C 375 335 350 370 320 362 C 300 375 270 375 262 360 Z" fill="#5d6440" opacity="0.6" filter="url(#wash)" />
       <path className="sk" d="M262 360 C 250 320 280 290 305 300 C 320 270 360 285 355 315 C 375 335 350 370 320 362 C 300 375 270 375 262 360" />
       <path className="sk" d="M306 440 L309 368" />
       {/* entrance arch at the end of the path, with drapes */}
-      <path className="wash" d="M168 326 C 178 360 172 396 176 420 L168 420Z M232 326 C 222 360 228 396 224 420 L232 420Z" fill="#c98e9c" opacity="0.55" filter="url(#wash)" />
+      <path className="wash" d="M168 326 C 178 360 172 396 176 420 L168 420Z M232 326 C 222 360 228 396 224 420 L232 420Z" fill="#d9a88f" opacity="0.55" filter="url(#wash)" />
       <path className="sk sk-ink" d="M168 420 L168 320 A 32 32 0 0 1 232 320 L232 420 M174 420 L174 322 A 26 26 0 0 1 226 322 L226 420" />
       {/* string lights */}
       <path className="sk sk-light" d="M96 300 Q 148 334 200 290 Q 262 336 330 318" />
       {/* signboard beside the path */}
-      <path className="sk" style={{ stroke: '#8a6f5a' }} d="M226 592 L222 684 M364 592 L368 684" />
-      <rect className="sk" style={{ stroke: '#8a6f5a', strokeWidth: 1.6 }} x={202} y={436} width={186} height={156} rx={6} />
-      <rect className="sk sk-light" style={{ stroke: '#8a6f5a' }} x={210} y={444} width={170} height={140} rx={4} />
+      <path className="sk" style={{ stroke: '#b08a6a' }} d="M226 592 L222 684 M364 592 L368 684" />
+      <rect className="sk" style={{ stroke: '#b08a6a', strokeWidth: 1.6 }} x={202} y={436} width={186} height={156} rx={6} />
+      <rect className="sk sk-light" style={{ stroke: '#b08a6a' }} x={210} y={444} width={170} height={140} rx={4} />
     </g>
   )
 }
@@ -88,7 +88,7 @@ function PathDecor() {
 function DateWide() {
   return (
     <g className="date-wide" filter="url(#pencil)">
-      <path className="wash" d="M-400 432 L0 430 L0 700 L-400 700Z M400 430 L800 432 L800 700 L400 700Z" fill="#cbd8d0" opacity="0.35" filter="url(#wash)" />
+      <path className="wash" d="M-400 432 L0 430 L0 700 L-400 700Z M400 430 L800 432 L800 700 L400 700Z" fill="#5d6440" opacity="0.35" filter="url(#wash)" />
       <path className="sk sk-light" d="M-400 432 L0 430 M400 430 L800 432" />
       <path className="sk" d={hedgeD(-400, 0, 450, 14)} />
       <path className="sk" d={hedgeD(400, 800, 446, 14)} />
@@ -114,7 +114,7 @@ function Bulbs() {
   const pts: [number, number][] = []
   for (let i = 1; i < 9; i++) { const t = i / 9; pts.push([96 + 104 * t, (1 - t) * (1 - t) * 300 + 2 * (1 - t) * t * 334 + t * t * 290]) }
   for (let i = 1; i < 9; i++) { const t = i / 9; pts.push([200 + 130 * t, (1 - t) * (1 - t) * 290 + 2 * (1 - t) * t * 336 + t * t * 318]) }
-  return <g className="bulbs">{pts.map(([x, y], i) => <circle key={i} cx={x} cy={y + 3} r={2.2} fill={i % 2 ? '#efc1a8' : '#fbe7da'} className="lantern-glow" style={{ animationDelay: `${-i * 0.4}s` }} />)}</g>
+  return <g className="bulbs">{pts.map(([x, y], i) => <circle key={i} cx={x} cy={y + 3} r={2.2} fill={i % 2 ? '#efc1a8' : '#f1d6cf'} className="lantern-glow" style={{ animationDelay: `${-i * 0.4}s` }} />)}</g>
 }
 
 function ArchFlowers() {
@@ -168,7 +168,7 @@ export function DateBoard() {
         <Sketch wide={<DateWide />}>
           <g className="entrance"><EntranceSketch /></g>
           <PathDecor />
-          <rect className="board-fill" x={211} y={445} width={168} height={138} rx={4} fill="#fdfaf4" opacity={1} />
+          <rect className="board-fill" x={211} y={445} width={168} height={138} rx={4} fill="#4a1622" opacity={1} />
           <Bulbs />
           <ArchFlowers />
         </Sketch>
@@ -186,7 +186,7 @@ export function DateBoard() {
             <p className="relative font-[family-name:var(--font-display)] text-[clamp(2.2rem,13cqw,3.6rem)] leading-none text-[var(--color-ink)]">
               {g.day}
               <svg viewBox="0 0 80 60" className="pointer-events-none absolute top-1/2 left-1/2 h-[1.3em] w-[1.75em] -translate-x-1/2 -translate-y-[52%] overflow-visible" aria-hidden>
-                <path className="date-mark" d={roughEllipse(40, 30, 36, 25, 17)} fill="none" stroke="#c98e9c" strokeWidth={1.6} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+                <path className="date-mark" d={roughEllipse(40, 30, 36, 25, 17)} fill="none" stroke="#d9a88f" strokeWidth={1.6} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
               </svg>
             </p>
             <p className="hand text-[clamp(1.1rem,6cqw,1.6rem)] leading-tight text-[var(--color-ink)]">{g.month} {g.year}</p>

@@ -43,14 +43,16 @@ export const wedding = {
     name: 'Athika Rabeea',
     relation: 'Daughter of',
     father: 'Zakeer Hussain M',
-    mother: 'Soudath',
+    mother: 'Soudath K',
+    family: 'Moothedath (H), Pathampad, Tirur',
   } satisfies Person,
 
   groom: {
     name: 'Muhammed Shamil',
     relation: 'Son of',
     father: 'Kinanath K',
-    mother: 'Suhara',
+    mother: 'Suhara P',
+    family: 'Kanakkanchery (H), Kunnamangalam',
   } satisfies Person,
 
   /** Short names used in the monogram and share text */
@@ -96,20 +98,20 @@ export const wedding = {
     lines: [
       'We joyfully invite you and your family',
       'to celebrate our Nikah with us.',
-      'Your presence and duas will make',
-      'our day truly complete.',
+      'Your presence, blessings & duas',
+      'will be the greatest honour to our family.',
     ],
     quoteAr: 'وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً',
     quoteEn: '“And He placed between you affection and mercy.”',
     quoteRef: 'Surah Ar-Rum · 30:21',
-    signature: 'With love & duas, Athika & Shamil',
+    signature: 'With love & duas, Shamil & Athika',
   },
 
   /** Put the audio file in /public/audio. Set to null to hide the music button. */
   music: '/audio/nasheed.mp3' as string | null,
 
   /** Message sent by the "Share on WhatsApp" button; the invitation link is added after it. */
-  shareText: "We're getting married! 💍 With the blessings of Allah, Athika & Shamil joyfully invite you to celebrate our Nikah. Open our invitation for all the details 💌",
+  shareText: "We're getting married! 💍 With the blessings of Allah, Shamil & Athika joyfully invite you to celebrate our Nikah. Open our invitation for all the details 💌",
 }
 
 export type Wedding = typeof wedding

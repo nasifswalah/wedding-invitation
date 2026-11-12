@@ -1,4 +1,4 @@
-# Wedding Invitation — Athika & Shamil
+# Wedding Invitation — Shamil & Athika
 
 A mobile-first animated storybook invitation. It opens like a trailer (du'a → names → date → time → venue → invitation), then becomes a scroll page.
 

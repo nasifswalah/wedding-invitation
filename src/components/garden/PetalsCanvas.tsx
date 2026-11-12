@@ -9,12 +9,12 @@ type Petal = {
   extra: boolean; captured: boolean; flight?: number
 }
 
-// colours of the outfit: powder blue, rose-mauve, peach, ivory
+// colours of the card: champagne, burgundy, blush, cream
 const COLORS: [string, string][] = [
-  ['#dfe8ef', '#9fb7c9'],
-  ['#f1dade', '#c98e9c'],
+  ['#f1dcc8', '#c49a8a'],
+  ['#d99aa0', '#7a2a38'],
   ['#fbe3d6', '#e7ab8f'],
-  ['#fffdf8', '#e6dccb'],
+  ['#f6e7d6', '#c9a98c'],
 ]
 
 /**

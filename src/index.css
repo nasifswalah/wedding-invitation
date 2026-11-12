@@ -1,21 +1,23 @@
 @import 'tailwindcss';
 
-/* Palette taken from the bride's outfit: powder-blue gown, rose-mauve dupatta,
-   champagne / peach embroidery flowers, on cream paper. */
+/* Palette from the printed invitation card: deep maroon, champagne / rose-gold
+   lettering, burgundy & cream florals with olive leaves. Token names are kept
+   from the earlier light theme so components recolour automatically. */
 @theme {
-  --color-cream: #f8f3ea;
-  --color-paper: #fdfaf4;
-  --color-blue: #a9bfcf;
-  --color-blue-soft: #d3e0ea;
-  --color-blue-deep: #6f8aa1;
-  --color-mauve: #c98e9c;
-  --color-mauve-soft: #ead2d6;
-  --color-mauve-deep: #9c6473;
+  --color-cream: #3a0f19;       /* page background */
+  --color-paper: #4a1622;       /* raised surfaces: letter, board, clock */
+  --color-maroon-deep: #2a0a12; /* vignette, shadows */
+  --color-blue: #cbb59c;        /* soft champagne-grey */
+  --color-blue-soft: #5a1d2a;   /* subtle maroon highlight */
+  --color-blue-deep: #cbb59c;   /* secondary labels */
+  --color-mauve: #d9a88f;       /* rose-gold accent */
+  --color-mauve-soft: #6b2534;
+  --color-mauve-deep: #e6b59c;  /* emphasis on dark */
   --color-peach: #efc1a8;
-  --color-champagne: #e3cfb4;
-  --color-sage: #8fa39a;
-  --color-ink: #3d4b5c;
-  --color-pencil: #6b7a8c;
+  --color-champagne: #e9c9a6;   /* headings */
+  --color-sage: #6f7a52;        /* olive leaves */
+  --color-ink: #f3e3cf;         /* main text (ivory) */
+  --color-pencil: #cfae8f;      /* eyebrows, sketch lines */
 
   --font-script: 'Great Vibes', cursive;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -25,7 +27,7 @@
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {
@@ -64,11 +66,12 @@ body {
   line-height: 1.55;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  /* cream paper with a faint grain */
+  /* deep maroon with a faint lace pattern (like the card) and a soft vignette */
   background-color: var(--color-cream);
   background-image:
-    radial-gradient(120% 80% at 50% 0%, rgba(253, 250, 244, 0.9), rgba(253, 250, 244, 0) 70%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.32 0 0 0 0 0.28 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    radial-gradient(120% 90% at 50% 35%, rgba(90, 29, 42, 0.55), rgba(42, 10, 18, 0) 60%),
+    radial-gradient(140% 110% at 50% 50%, rgba(42, 10, 18, 0) 55%, rgba(26, 6, 11, 0.6) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23e9c9a6' stroke-opacity='0.06' stroke-width='0.8'%3E%3Cg transform='translate(48 48)'%3E%3Ccircle r='4'/%3E%3Cpath d='M0-5C5-11 5-18 0-22C-5-18-5-11 0-5M0 5C5 11 5 18 0 22C-5 18-5 11 0 5M-5 0C-11 5-18 5-22 0C-18-5-11-5-5 0M5 0C11 5 18 5 22 0C18-5 11-5 5 0'/%3E%3Ccircle r='28' stroke-dasharray='2 4'/%3E%3C/g%3E%3Ccircle cx='0' cy='0' r='6'/%3E%3Ccircle cx='96' cy='0' r='6'/%3E%3Ccircle cx='0' cy='96' r='6'/%3E%3Ccircle cx='96' cy='96' r='6'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 body.locked {
@@ -77,7 +80,7 @@ body.locked {
 }
 
 ::selection {
-  background: var(--color-blue-soft);
+  background: var(--color-mauve-soft);
   color: var(--color-ink);
 }
 
@@ -134,7 +137,7 @@ body.locked {
   height: 140%;
   transform: rotate(-24deg);
   transform-origin: top left;
-  background: linear-gradient(180deg, rgba(255, 252, 244, 0.6), rgba(255, 252, 244, 0) 75%);
+  background: linear-gradient(180deg, rgba(233, 201, 166, 0.16), rgba(233, 201, 166, 0) 75%);
   filter: blur(14px);
   animation: ray-breathe 9s ease-in-out infinite;
 }

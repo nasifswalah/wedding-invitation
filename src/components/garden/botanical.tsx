@@ -24,14 +24,14 @@ export function Leaf({ w = 9, l = 30, fill = 'url(#g-leaf)', vein = true }: { w?
   return (
     <g>
       <path d={leafPath(w, l)} fill={fill} />
-      {vein && <path d={`M0 0 Q ${w * 0.12} ${-l * 0.5} 0 ${-l * 0.94}`} stroke="#eef2ee" strokeOpacity={0.45} strokeWidth={0.7} fill="none" />}
+      {vein && <path d={`M0 0 Q ${w * 0.12} ${-l * 0.5} 0 ${-l * 0.94}`} stroke="#c9cfae" strokeOpacity={0.45} strokeWidth={0.7} fill="none" />}
     </g>
   )
 }
 
 export type RoseTone = 'mauve' | 'peach' | 'ivory'
 const ROSE: Record<RoseTone, { petal: string; core: string; edge: string }> = {
-  mauve: { petal: 'url(#g-mauve-petal)', core: 'url(#g-mauve-core)', edge: '#8e5465' },
+  mauve: { petal: 'url(#g-mauve-petal)', core: 'url(#g-mauve-core)', edge: '#4a1018' },
   peach: { petal: 'url(#g-peach-petal)', core: 'url(#g-peach-core)', edge: '#b97458' },
   ivory: { petal: 'url(#g-ivory-petal)', core: 'url(#g-ivory-core)', edge: '#bba98b' },
 }
@@ -98,7 +98,7 @@ function floretPath(s: number) {
 export function Hydrangea({ r = 16, tone = 'blue', seed = 1 }: { r?: number; tone?: 'blue' | 'lilac'; seed?: number }) {
   const rnd = seeded(seed * 31 + 7)
   const fill = tone === 'blue' ? 'url(#g-hydra-blue)' : 'url(#g-hydra-lilac)'
-  const edge = tone === 'blue' ? '#7d97ab' : '#a5829a'
+  const edge = tone === 'blue' ? '#8a5a50' : '#6a2a36'
   const n = 15
   const florets = Array.from({ length: n }, (_, i) => {
     const t = (i + 0.5) / n
@@ -108,7 +108,7 @@ export function Hydrangea({ r = 16, tone = 'blue', seed = 1 }: { r?: number; ton
   })
   return (
     <g>
-      <circle r={r * 0.95} fill={tone === 'blue' ? '#b9cad7' : '#d6bfcc'} opacity={0.9} />
+      <circle r={r * 0.95} fill={tone === 'blue' ? '#b88a80' : '#8a4652'} opacity={0.9} />
       {florets.map((f, i) => (
         <g key={i} transform={`translate(${f.x.toFixed(1)} ${f.y.toFixed(1)}) rotate(${f.rot.toFixed(0)})`}>
           <path d={floretPath(f.s)} fill={fill} stroke={edge} strokeOpacity={0.35} strokeWidth={0.35} />
@@ -126,7 +126,7 @@ export function Eucalyptus({ length = 60, seed = 1, size = 1 }: { length?: numbe
   const bend = (rnd() - 0.5) * 14
   return (
     <g>
-      <path d={`M0 0 Q ${bend} ${length * 0.5} ${bend * 0.4} ${length}`} stroke="#7f9488" strokeWidth={0.9} fill="none" />
+      <path d={`M0 0 Q ${bend} ${length * 0.5} ${bend * 0.4} ${length}`} stroke="#5f6b42" strokeWidth={0.9} fill="none" />
       {Array.from({ length: n }, (_, i) => {
         const t = (i + 0.6) / n
         const y = t * length
@@ -134,7 +134,7 @@ export function Eucalyptus({ length = 60, seed = 1, size = 1 }: { length?: numbe
         const rr = (5.2 - t * 2.4) * size
         const side = i % 2 ? 1 : -1
         return (
-          <ellipse key={i} cx={x + side * rr * 0.9} cy={y} rx={rr} ry={rr * 0.85} fill="url(#g-euca)" stroke="#6f8579" strokeOpacity={0.3} strokeWidth={0.4}
+          <ellipse key={i} cx={x + side * rr * 0.9} cy={y} rx={rr} ry={rr * 0.85} fill="url(#g-euca)" stroke="#4f5a36" strokeOpacity={0.3} strokeWidth={0.4}
             transform={`rotate(${side * 20} ${x} ${y})`} />
         )
       })}
@@ -149,9 +149,9 @@ export function Spray({ r = 14, dir = -1 }: { r?: number; dir?: 1 | -1 }) {
     <g>
       {tips.map(([tx, ty], i) => (
         <g key={i}>
-          <path d={`M0 0 Q ${tx * r * 0.3} ${-dir * ty * r * 0.5} ${tx * r} ${-dir * ty * r}`} stroke="#8a9a8f" strokeWidth={0.6} fill="none" />
-          <circle cx={tx * r} cy={-dir * ty * r} r={r * 0.15} fill="#fffdf8" stroke="#e3dccd" strokeWidth={0.35} />
-          <circle cx={tx * r * 0.7} cy={-dir * ty * r * 0.72} r={r * 0.1} fill="#fffdf8" />
+          <path d={`M0 0 Q ${tx * r * 0.3} ${-dir * ty * r * 0.5} ${tx * r} ${-dir * ty * r}`} stroke="#7a8456" strokeWidth={0.6} fill="none" />
+          <circle cx={tx * r} cy={-dir * ty * r} r={r * 0.15} fill="#f6e7d6" stroke="#c9ab8c" strokeWidth={0.35} />
+          <circle cx={tx * r * 0.7} cy={-dir * ty * r * 0.72} r={r * 0.1} fill="#f6e7d6" />
         </g>
       ))}
     </g>
@@ -175,7 +175,7 @@ export function Bud({ r = 8, fill = 'url(#g-mauve-petal)' }: { r?: number; fill?
 export function Jasmine({ r = 9 }: { r?: number }) {
   return (
     <g>
-      <path d={`M0 0 L0 ${-r * 0.6}`} stroke="#7f9488" strokeWidth={1.1} />
+      <path d={`M0 0 L0 ${-r * 0.6}`} stroke="#5f6b42" strokeWidth={1.1} />
       <g transform={`translate(0 ${-r * 1.4})`}>
         {[0, 60, 120, 180, 240, 300].map((a) => (
           <path key={a} d={petalPath(r * 0.3, r)} transform={`rotate(${a})`} fill="url(#g-jasmine)" stroke="#ddd5c6" strokeWidth={0.4} />
@@ -234,7 +234,7 @@ export function Plant({ x, y, h, bend = 0, kind = 'rose', size = 15, leaves = 2,
   return (
     <g transform={`translate(${x} ${y}) scale(${scale})`}>
       <SwayG amp={amp * dir} phase={phase} stiffness={2.2}>
-        <path d={`M0 0 Q ${bend * 0.9} ${-h * 0.5} ${bend} ${-h}`} stroke="#6f8579" strokeWidth={2.2} fill="none" strokeLinecap="round" />
+        <path d={`M0 0 Q ${bend * 0.9} ${-h * 0.5} ${bend} ${-h}`} stroke="#4f5a36" strokeWidth={2.2} fill="none" strokeLinecap="round" />
         {leafTs.map((t, i) => {
           const p = quad(t, h, bend)
           const side = i % 2 === 0 ? 1 : -1

@@ -13,7 +13,7 @@ function Hills() {
     <svg viewBox="0 0 1200 300" preserveAspectRatio="xMidYMax slice" className="absolute inset-x-0 bottom-0 h-[34%] w-full" aria-hidden>
       <path d="M0 160 C 200 90 380 140 560 110 C 760 76 940 130 1200 96 L1200 300 L0 300Z" fill="url(#g-hill-back)" opacity={0.8} />
       {Array.from({ length: 40 }, (_, i) => (
-        <circle key={i} cx={(i * 131) % 1200} cy={150 + ((i * 53) % 90)} r={2 + (i % 3)} fill={i % 3 === 0 ? '#ead2d6' : i % 3 === 1 ? '#d3e0ea' : '#fffdf8'} opacity={0.75} />
+        <circle key={i} cx={(i * 131) % 1200} cy={150 + ((i * 53) % 90)} r={2 + (i % 3)} fill={i % 3 === 0 ? '#8e3344' : i % 3 === 1 ? '#7a2a38' : '#f6e7d6'} opacity={0.75} />
       ))}
       <path d="M0 220 C 240 170 420 230 640 196 C 860 162 1010 210 1200 184 L1200 300 L0 300Z" fill="url(#g-hill-front)" opacity={0.7} />
     </svg>
@@ -28,7 +28,7 @@ function LightRays() {
       <div className="ray" style={{ left: '30%', width: '30%', animationDelay: '-6s', opacity: 0.5 }} />
       <div
         className="absolute -left-[20%] -top-[25%] h-[70%] w-[90%] rounded-full"
-        style={{ background: 'radial-gradient(closest-side, rgba(255,250,240,0.9), rgba(255,250,240,0))' }}
+        style={{ background: 'radial-gradient(closest-side, rgba(233,201,166,0.14), rgba(233,201,166,0))' }}
       />
     </div>
   )
@@ -86,7 +86,7 @@ export function GardenScene() {
 
   return (
     <div ref={root} className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #fbf8f1 0%, #f8f3ea 50%, #eaeee8 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #431420 0%, #3a0f19 50%, #2e0c14 100%)' }} />
       <LightRays />
       <div data-depth="0.9" className="absolute inset-0">
         <Hills />

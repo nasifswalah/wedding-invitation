@@ -30,9 +30,9 @@ function chairRows(minX: number, maxX: number) {
 function Canopy() {
   return (
     <g>
-      <path className="wash" d="M160 478 L240 478 L236 470 L164 470 Z" fill="#d3e0ea" opacity="0.8" />
-      <path className="wash" d="M170 400 C 182 426 174 452 182 470 L170 470Z M230 400 C 218 426 226 452 218 470 L230 470Z" fill="#c98e9c" opacity="0.6" filter="url(#wash)" />
-      <path className="wash" d="M170 398 C 185 410 215 410 230 398 L230 404 C 215 416 185 416 170 404Z" fill="#fdfaf4" opacity="0.9" />
+      <path className="wash" d="M160 478 L240 478 L236 470 L164 470 Z" fill="#7a2a38" opacity="0.8" />
+      <path className="wash" d="M170 400 C 182 426 174 452 182 470 L170 470Z M230 400 C 218 426 226 452 218 470 L230 470Z" fill="#d9a88f" opacity="0.6" filter="url(#wash)" />
+      <path className="wash" d="M170 398 C 185 410 215 410 230 398 L230 404 C 215 416 185 416 170 404Z" fill="#4a1622" opacity="0.9" />
       <path className="sk sk-ink" d="M170 470 L170 396 M230 470 L230 396 M163 396 L237 396 M163 390 L237 390 M163 390 L163 396 M237 390 L237 396" />
       <path className="sk sk-light" d="M178 470 L178 404 M222 470 L222 404 M170 404 C 185 416 215 416 230 404" />
       <path className="sk sk-light" d="M158 478 L242 478 M158 470 L242 470 M158 470 L158 478 M242 470 L242 478" />
@@ -57,7 +57,7 @@ function CanopyFlowers() {
       {/* short hanging strands under the canopy beam */}
       {[176, 188, 200, 212, 224].map((x, i) => (
         <g key={`s${i}`} transform={`translate(${x} 398)`}>
-          <line x1={0} y1={0} x2={0} y2={10 + (i % 2) * 6} stroke="#8a9a8f" strokeWidth={0.4} />
+          <line x1={0} y1={0} x2={0} y2={10 + (i % 2) * 6} stroke="#7a8456" strokeWidth={0.4} />
           <g transform={`translate(0 ${12 + (i % 2) * 6})`}>{i % 2 ? <RoseHead r={2.6} tone="mauve" seed={i} /> : <Spray r={3} dir={-1} />}</g>
         </g>
       ))}
@@ -70,7 +70,7 @@ function VenueSketch({ wide }: { wide: boolean }) {
   const chairMin = wide ? -70 : -10, chairMax = wide ? 470 : 410
   return (
     <g filter="url(#pencil)">
-      <path className="wash" d={`M${minX} ${HZ} L${maxX} ${HZ} L${maxX} 700 L${minX} 700Z`} fill="#cbd8d0" opacity="0.35" filter="url(#wash)" />
+      <path className="wash" d={`M${minX} ${HZ} L${maxX} ${HZ} L${maxX} 700 L${minX} 700Z`} fill="#5d6440" opacity="0.35" filter="url(#wash)" />
       {/* tree line behind the lawn */}
       <path className="sk sk-light" d={hedge(minX, 150, HZ - 2, wide ? 18 : 6, -4)} />
       <path className="sk sk-light" d={hedge(250, maxX, HZ - 2, wide ? 18 : 6, 4)} />
@@ -79,7 +79,7 @@ function VenueSketch({ wide }: { wide: boolean }) {
       <Palm x={340} y={HZ} h={156} flip />
       <Canopy />
       {/* aisle with an ivory runner */}
-      <path className="wash" d={`M192 ${HZ} L208 ${HZ} L262 700 L138 700Z`} fill="#fdfaf4" opacity="0.9" />
+      <path className="wash" d={`M192 ${HZ} L208 ${HZ} L262 700 L138 700Z`} fill="#4a1622" opacity="0.9" />
       <path className="sk" d={`M188 ${HZ} L120 700 M212 ${HZ} L280 700`} />
       <path className="sk sk-light" d={`M192 ${HZ} L138 700 M208 ${HZ} L262 700`} />
       {chairRows(chairMin, chairMax).map((r, i) => (

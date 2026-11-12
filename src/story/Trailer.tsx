@@ -58,7 +58,7 @@ export function Trailer({ scenes, onDone, onSceneChange }: { scenes: TrailerScen
       <div className="fixed inset-x-0 top-0 z-50 px-3 pt-[max(0.6rem,env(safe-area-inset-top))]">
         <div className="flex gap-1">
           {scenes.map((s, i) => (
-            <span key={s.id} className="h-[2px] flex-1 overflow-hidden rounded-full bg-[rgba(107,122,140,0.2)]">
+            <span key={s.id} className="h-[2px] flex-1 overflow-hidden rounded-full bg-[rgba(233,201,166,0.18)]">
               <span
                 ref={(el) => { bars.current[i] = el }}
                 className="block h-full w-full origin-left bg-[var(--color-mauve)]"

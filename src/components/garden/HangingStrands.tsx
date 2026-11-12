@@ -17,9 +17,9 @@ type Bloom = { t: number; kind: Kind; size: number; rot: number; dx: number }
 type Strand = { x: number; len: number; phase: number; blooms: Bloom[]; angles: number[]; drop: number; delay: number }
 
 const ROSE: Record<string, [string, string, string]> = {
-  'rose-mauve': ['#8e5465', '#cf98a5', '#f3dde1'],
-  'rose-peach': ['#c67f62', '#f0c3ab', '#fbe7da'],
-  'rose-ivory': ['#cdb99a', '#efe5d4', '#fffdf8'],
+  'rose-mauve': ['#4a1018', '#8e3344', '#d99aa0'],
+  'rose-peach': ['#9a4a52', '#d9a3a8', '#f1d6cf'],
+  'rose-ivory': ['#cdb99a', '#efe5d4', '#f6e7d6'],
 }
 
 function paintSprite(kind: Kind, r: number, dpr: number, rnd: () => number) {
@@ -45,7 +45,7 @@ function paintSprite(kind: Kind, r: number, dpr: number, rnd: () => number) {
         g.bezierCurveTo(wid, -len * 0.2, wid * 1.15, -len * 0.85, 0, -len)
         g.bezierCurveTo(-wid * 1.15, -len * 0.85, -wid, -len * 0.2, 0, 0)
         g.fill()
-        g.strokeStyle = 'rgba(120,80,90,0.12)'
+        g.strokeStyle = 'rgba(40,8,14,0.25)'
         g.lineWidth = 0.5
         g.stroke()
         g.restore()
@@ -65,7 +65,7 @@ function paintSprite(kind: Kind, r: number, dpr: number, rnd: () => number) {
     g.beginPath(); g.arc(0, 0, r * 0.2, 0.3, Math.PI * 1.7); g.stroke()
   } else if (kind.startsWith('hyd')) {
     const blue = kind === 'hyd-blue'
-    g.fillStyle = blue ? '#b9cad7' : '#d6bfcc'
+    g.fillStyle = blue ? '#b88a80' : '#8a4652'
     g.beginPath(); g.arc(0, 0, r * 0.95, 0, Math.PI * 2); g.fill()
     for (let i = 0; i < 16; i++) {
       const t = (i + 0.5) / 16
@@ -77,27 +77,27 @@ function paintSprite(kind: Kind, r: number, dpr: number, rnd: () => number) {
       g.rotate(rnd() * Math.PI)
       for (let k = 0; k < 4; k++) {
         g.rotate(Math.PI / 2)
-        g.fillStyle = blue ? (k % 2 ? '#dfe8ef' : '#c8d7e3') : (k % 2 ? '#f2e6ec' : '#e0cbd6')
+        g.fillStyle = blue ? (k % 2 ? '#f1dcc8' : '#d9b8a8') : (k % 2 ? '#e6c3c0' : '#b97a80')
         g.beginPath(); g.ellipse(0, -s * 0.5, s * 0.38, s * 0.52, 0, 0, Math.PI * 2); g.fill()
       }
-      g.fillStyle = blue ? '#7d97ab' : '#a5829a'
+      g.fillStyle = blue ? '#8a5a50' : '#6a2a36'
       g.beginPath(); g.arc(0, 0, s * 0.13, 0, Math.PI * 2); g.fill()
       g.restore()
     }
   } else if (kind === 'spray') {
-    g.strokeStyle = '#8a9a8f'
+    g.strokeStyle = '#7a8456'
     g.lineWidth = 0.6
     for (let i = 0; i < 7; i++) {
       const a = -Math.PI / 2 + (rnd() - 0.5) * 2.4
       const L = r * (0.6 + rnd() * 0.5)
       g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(Math.cos(a) * L * 0.4, Math.sin(a) * L * 0.6, Math.cos(a) * L, Math.sin(a) * L); g.stroke()
-      g.fillStyle = '#fffdf8'
+      g.fillStyle = '#f6e7d6'
       g.beginPath(); g.arc(Math.cos(a) * L, Math.sin(a) * L, r * 0.16, 0, Math.PI * 2); g.fill()
     }
   } else {
     const grad = g.createRadialGradient(-r * 0.2, -r * 0.2, 0, 0, 0, r)
-    grad.addColorStop(0, '#c6d3cc')
-    grad.addColorStop(1, '#8aa096')
+    grad.addColorStop(0, '#a7ad84')
+    grad.addColorStop(1, '#5f6b42')
     g.fillStyle = grad
     g.beginPath(); g.ellipse(0, 0, r * 0.8, r * 0.68, 0, 0, Math.PI * 2); g.fill()
   }
@@ -181,7 +181,7 @@ export function HangingStrands({ className = '', maxHeight = 300 }: { className?
         ctx.clearRect(0, 0, w, H + 40)
 
         // the cord they hang from
-        ctx.strokeStyle = 'rgba(143,163,154,0.7)'
+        ctx.strokeStyle = 'rgba(207,174,143,0.55)'
         ctx.lineWidth = 1.2
         ctx.beginPath()
         ctx.moveTo(0, 5)
@@ -207,7 +207,7 @@ export function HangingStrands({ className = '', maxHeight = 300 }: { className?
             const prev = pts[pts.length - 1]
             pts.push({ x: prev.x - Math.sin(a) * seg, y: prev.y + Math.cos(a) * seg, a })
           }
-          ctx.strokeStyle = 'rgba(138,154,143,0.55)'
+          ctx.strokeStyle = 'rgba(207,174,143,0.4)'
           ctx.lineWidth = 0.7
           ctx.beginPath()
           ctx.moveTo(pts[0].x, pts[0].y)

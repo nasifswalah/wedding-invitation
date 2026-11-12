@@ -25,7 +25,7 @@ export function RoundTree({ x, y, r = 40 }: { x: number; y: number; r?: number }
   const blob = `M${f(x - r)} ${f(cy + r * 0.3)} C ${f(x - r * 1.3)} ${f(cy - r * 0.6)} ${f(x - r * 0.4)} ${f(cy - r * 1.2)} ${f(x)} ${f(cy - r * 0.9)} C ${f(x + r * 0.5)} ${f(cy - r * 1.3)} ${f(x + r * 1.3)} ${f(cy - r * 0.5)} ${f(x + r)} ${f(cy + r * 0.2)} C ${f(x + r * 1.2)} ${f(cy + r * 0.9)} ${f(x + r * 0.3)} ${f(cy + r * 1.1)} ${f(x)} ${f(cy + r * 0.8)} C ${f(x - r * 0.5)} ${f(cy + r * 1.1)} ${f(x - r * 1.2)} ${f(cy + r * 0.9)} ${f(x - r)} ${f(cy + r * 0.3)} Z`
   return (
     <g>
-      <path className="wash" d={blob} fill="#cbd8d0" opacity="0.55" filter="url(#wash)" />
+      <path className="wash" d={blob} fill="#5d6440" opacity="0.55" filter="url(#wash)" />
       <path className="sk" d={blob} />
       <path className="sk" d={`M${x - 3} ${y} L${f(x - 2)} ${f(cy + r * 0.7)} M${x + 4} ${y} L${f(x + 3)} ${f(cy + r * 0.7)} M${x} ${f(cy + r * 0.9)} l-10 -12 M${x + 1} ${f(cy + r * 0.95)} l10 -10`} />
     </g>
@@ -67,11 +67,11 @@ export function GuestTable({ x, y, s = 1 }: { x: number; y: number; s?: number }
   const chair = (cx: number) => `M${f(cx - 6 * s)} ${y} L${f(cx - 6 * s)} ${f(y - 12 * s)} M${f(cx + 6 * s)} ${y} L${f(cx + 6 * s)} ${f(y - 12 * s)} M${f(cx - 7 * s)} ${f(y - 12 * s)} L${f(cx + 7 * s)} ${f(y - 12 * s)} M${f(cx - 6 * s)} ${f(y - 12 * s)} L${f(cx - 6 * s)} ${f(y - 30 * s)} Q ${f(cx)} ${f(y - 35 * s)} ${f(cx + 6 * s)} ${f(y - 30 * s)} L${f(cx + 6 * s)} ${f(y - 12 * s)}`
   return (
     <g>
-      <path className="wash" d={`M${f(x - r)} ${f(top)} C ${f(x - r - 2)} ${f(y - 8 * s)} ${f(x - r + 4)} ${y} ${f(x - r + 6)} ${y} L${f(x + r - 6)} ${y} C ${f(x + r - 4)} ${y} ${f(x + r + 2)} ${f(y - 8 * s)} ${f(x + r)} ${f(top)} Z`} fill="#fdfaf4" opacity="0.95" />
+      <path className="wash" d={`M${f(x - r)} ${f(top)} C ${f(x - r - 2)} ${f(y - 8 * s)} ${f(x - r + 4)} ${y} ${f(x - r + 6)} ${y} L${f(x + r - 6)} ${y} C ${f(x + r - 4)} ${y} ${f(x + r + 2)} ${f(y - 8 * s)} ${f(x + r)} ${f(top)} Z`} fill="#4a1622" opacity="0.95" />
       <path className="sk" d={chair(x - r - 9 * s) + ' ' + chair(x + r + 9 * s)} />
       <ellipse className="sk" cx={x} cy={f(top)} rx={f(r)} ry={f(7 * s)} />
       <path className="sk sk-light" d={`M${f(x - r)} ${f(top)} C ${f(x - r - 2)} ${f(y - 8 * s)} ${f(x - r + 4)} ${y} ${f(x - r + 6)} ${y} M${f(x + r)} ${f(top)} C ${f(x + r + 2)} ${f(y - 8 * s)} ${f(x + r - 4)} ${y} ${f(x + r - 6)} ${y} M${f(x - r * 0.4)} ${f(top + 6 * s)} L${f(x - r * 0.45)} ${y} M${f(x + r * 0.4)} ${f(top + 6 * s)} L${f(x + r * 0.45)} ${y}`} />
-      <path className="wash" d={`M${f(x - r * 0.7)} ${f(top + 4 * s)} L${f(x + r * 0.7)} ${f(top + 4 * s)} L${f(x + r * 0.6)} ${f(top + 16 * s)} L${f(x - r * 0.6)} ${f(top + 16 * s)} Z`} fill="#c98e9c" opacity="0.4" filter="url(#wash)" />
+      <path className="wash" d={`M${f(x - r * 0.7)} ${f(top + 4 * s)} L${f(x + r * 0.7)} ${f(top + 4 * s)} L${f(x + r * 0.6)} ${f(top + 16 * s)} L${f(x - r * 0.6)} ${f(top + 16 * s)} Z`} fill="#d9a88f" opacity="0.4" filter="url(#wash)" />
       <path className="sk sk-light" d={`M${x} ${f(top)} L${x} ${f(top - 14 * s)}`} />
       <g className="prop-bloom" transform={`translate(${x} ${f(top - 18 * s)}) scale(${s * 0.8})`}>
         <Hydrangea r={8} seed={Math.round(x)} />
@@ -102,7 +102,7 @@ export function StringLights({ x1, y1, x2, y2, sag = 30, n = 8 }: { x1: number; 
       <g className="bulbs">
         {Array.from({ length: n }, (_, i) => {
           const [bx, by] = pt((i + 1) / (n + 1))
-          return <circle key={i} cx={f(bx)} cy={f(by + 3)} r={2.1} fill={i % 2 ? '#efc1a8' : '#fbe7da'} className="lantern-glow" style={{ animationDelay: `${-i * 0.37}s` }} />
+          return <circle key={i} cx={f(bx)} cy={f(by + 3)} r={2.1} fill={i % 2 ? '#efc1a8' : '#f1d6cf'} className="lantern-glow" style={{ animationDelay: `${-i * 0.37}s` }} />
         })}
       </g>
     </g>

@@ -66,7 +66,7 @@ export function roughLine(x1: number, y: number, x2: number, seed = 1) {
 
 /** Link/button with no border or shadow — a pencil ellipse draws itself around it. */
 export function SketchLink({
-  children, href, onClick, color = '#9c6473', delay = 0, external,
+  children, href, onClick, color = '#e6b59c', delay = 0, external,
 }: { children: ReactNode; href?: string; onClick?: () => void; color?: string; delay?: number; external?: boolean }) {
   const inner = (
     <>
@@ -105,8 +105,8 @@ export function DirectionsButton({ href, delay = 0, hint = 'Tap to open the map'
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative isolate inline-flex min-h-[52px] items-center gap-2.5 rounded-full px-7 font-[family-name:var(--font-display)] text-[0.78rem] tracking-[0.22em] text-[#fffaf5] uppercase transition-transform active:scale-95"
-        style={{ background: 'linear-gradient(135deg, #a8697a 0%, #c98e9c 55%, #b07585 100%)', boxShadow: '0 10px 24px -12px rgba(156,100,115,0.9)' }}
+        className="group relative isolate inline-flex min-h-[52px] items-center gap-2.5 rounded-full px-7 font-[family-name:var(--font-display)] text-[0.78rem] tracking-[0.22em] text-[#3a0f19] uppercase transition-transform active:scale-95"
+        style={{ background: 'linear-gradient(135deg, #c9977c 0%, #ecc6a6 55%, #c48a74 100%)', boxShadow: '0 10px 24px -12px rgba(0,0,0,0.5)' }}
       >
         {/* soft pulse */}
         <span className="pointer-events-none absolute inset-0 -z-10 animate-ping rounded-full bg-[var(--color-mauve)] opacity-25 [animation-duration:2.4s]" />
@@ -114,7 +114,7 @@ export function DirectionsButton({ href, delay = 0, hint = 'Tap to open the map'
         <svg viewBox="0 0 200 60" preserveAspectRatio="none" className="pointer-events-none absolute -inset-x-2.5 -inset-y-2 h-[calc(100%+1rem)] w-[calc(100%+1.25rem)] overflow-visible" aria-hidden>
           <motion.path
             d={roughEllipse(100, 30, 98, 28, 9)}
-            fill="none" stroke="#9c6473" strokeWidth={1.2} strokeLinecap="round" vectorEffect="non-scaling-stroke"
+            fill="none" stroke="#e6b59c" strokeWidth={1.2} strokeLinecap="round" vectorEffect="non-scaling-stroke"
             initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }}
             transition={{ duration: 1.2, delay: delay + 0.4 }}
           />

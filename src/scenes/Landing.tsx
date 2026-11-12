@@ -37,14 +37,14 @@ export function Landing() {
               <rect className="feather" x="600" y="0" width="760" height="150" fill="url(#feather-grad)" />
             </mask>
             <radialGradient id="pen-glow">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="0.45" stopColor="#c98e9c" stopOpacity="0.55" />
-              <stop offset="1" stopColor="#c98e9c" stopOpacity="0" />
+              <stop offset="0" stopColor="#fbf0e2" />
+              <stop offset="0.45" stopColor="#d9a88f" stopOpacity="0.55" />
+              <stop offset="1" stopColor="#d9a88f" stopOpacity="0" />
             </radialGradient>
           </defs>
           <g mask="url(#write-mask)">
             <text className="basmala-text" x="300" y="100" textAnchor="middle" direction="rtl" fontFamily="Amiri, serif" fontSize="64"
-              fill="#3d4b5c" stroke="#6b7a8c" strokeWidth="0.8">
+              fill="#f3e3cf" stroke="#cfae8f" strokeWidth="0.8">
               {BISMILLAH}
             </text>
           </g>
@@ -55,9 +55,9 @@ export function Landing() {
         </p>
 
         <svg viewBox="0 0 200 24" className="flourish my-5 w-40" aria-hidden>
-          <path className="sk" style={{ stroke: '#c98e9c' }} d="M6 12 C 40 12 50 4 80 12 C 88 15 94 15 98 12" />
-          <path className="sk" style={{ stroke: '#c98e9c' }} d="M194 12 C 160 12 150 4 120 12 C 112 15 106 15 102 12" />
-          <path className="sk" style={{ stroke: '#a9bfcf', strokeWidth: 1.6 }} d="M100 6 L105 12 L100 18 L95 12Z" />
+          <path className="sk" style={{ stroke: '#d9a88f' }} d="M6 12 C 40 12 50 4 80 12 C 88 15 94 15 98 12" />
+          <path className="sk" style={{ stroke: '#d9a88f' }} d="M194 12 C 160 12 150 4 120 12 C 112 15 106 15 102 12" />
+          <path className="sk" style={{ stroke: '#d9a88f', strokeWidth: 1.6 }} d="M100 6 L105 12 L100 18 L95 12Z" />
         </svg>
 
         <div className="arabic flex flex-col text-[1.35rem] leading-[1.9] text-[var(--color-mauve-deep)]">
